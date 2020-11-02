@@ -9,19 +9,24 @@
     "fix": "eslint --fix src/*.ts"
   },
   "bin": {
-    "puppy": "./cli.js"
+    "puppy": "/lib/cli.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cross-spawn": "^7.0.3",
     "chalk": "^4.1.0",
     "commander": "^6.1.0"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/commander": "^2.12.2",
+    "@types/cross-spawn": "^6.0.2",
+    "@types/node": "^14.14.6",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",
-    "cross-spawn": "^7.0.3",
+   
     "eslint": "^7.12.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.1",
