@@ -6,6 +6,9 @@
 import { Command } from 'commander';
 import Chalk from 'chalk';
 import Spawn from 'cross-spawn';
+import path from 'path';
+import fs from 'fs';
+import { exit } from 'process';
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
@@ -16,14 +19,27 @@ const program = new Command();
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
-program.option('-c, --create <y>', 'Create a project');
+program.option('-c, --create <project>', 'Create a project')
+       .option('-u, --use <plugin>', 'Use Some Plugins');
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
 //   .option('-d, --debug', 'output extra debugging')
 //   .option('-s, --small', 'small pizza size')
 //   .option('-p, --pizza-type <type>', 'flavour of pizza');
 program.parse(process.argv);
+const _dirPath = process.cwd();
+console.log(_dirPath, __dirname, path.basename);
+// console.log(program.use);
+// exit();
 
-console.log(program.create);
+
+process.chdir(__dirname + '/plugins/' + program.use);
+Spawn.sync('npm', ['install'], { stdio: 'inherit' });
+Spawn.sync('npm', ['run', 'engaaged'], { stdio: 'inherit' });
+fs.writeFileSync(_dirPath + '/happy.js', fs.readFileSync(path.join(__dirname, 'plugins/test/bundle.js')));
+console.log(Chalk.red.bold.bgGreenBright('Mission Done...'));
+
+
+// Spawn.sync('pwd', [], { stdio: 'inherit' });
 
 // (async () => {
 //   const {stdout} = await execa('echo', ['unicorns']);
@@ -35,3 +51,5 @@ console.log(program.create);
 //   console.log('pizza details:', program.yeoman);
 // if (program.small) console.log('- small pizza size');
 // if (program.pizzaType) console.log(`- ${program.pizzaType}`);
+
+
