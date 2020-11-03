@@ -6,22 +6,24 @@
 import { Command } from 'commander';
 import Chalk from 'chalk';
 import Spawn from 'cross-spawn';
-// cosnt execa = require("execa");
+// console.log('take me home country home!！！！');
+// cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
 // console.log(chalk.red.bold.bgWhite('Hello World'));
 const program = new Command();
 // program.version('0.0.1');
-Spawn.sync('yo', ['puppy'], { stdio: 'inherit' });
-console.log(Chalk.red.bold.bgGreenBright('Done...'));
-Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
+// Spawn.sync('yo', ['puppy'], { stdio: 'inherit' });
+// console.log(Chalk.red.bold.bgGreenBright('Done...'));
+// Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
-program
-  .option('-create, --yeoman <y>', 'Create a yeoman project')
-  .option('-d, --debug', 'output extra debugging')
-  .option('-s, --small', 'small pizza size')
-  .option('-p, --pizza-type <type>', 'flavour of pizza');
- 
+program.option('-c, --create <y>', 'Create a project');
+//   .option('-create, --yeoman <y>', 'Create a yeoman project')
+//   .option('-d, --debug', 'output extra debugging')
+//   .option('-s, --small', 'small pizza size')
+//   .option('-p, --pizza-type <type>', 'flavour of pizza');
 program.parse(process.argv);
+
+console.log(program.create);
 
 // (async () => {
 //   const {stdout} = await execa('echo', ['unicorns']);
