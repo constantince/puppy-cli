@@ -34,9 +34,12 @@ process.chdir(_dirPath);
 // exit();
 //创建插件
 if(program.create === 'plugins') {
-   process.chdir(__dirname + '/plugins/yeoman/dist');
+   process.chdir(__dirname + '/plugins/yeoman');
    Spawn.sync('pwd', [], { stdio: 'inherit' });
    Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
+   //when done mv the dist
+   Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath + '/first-plugins/'])
+
 }
 
 // process.chdir(__dirname + '/plugins/' + program.use);;
