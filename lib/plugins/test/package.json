@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "engaaged": "rollup index.js --format cjs --file bundle.js"
+    "engaged": "rollup index.js --format cjs --file bundle.js"
   },
   "keywords": [],
   "author": "",

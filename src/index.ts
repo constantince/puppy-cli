@@ -20,7 +20,8 @@ const program = new Command();
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
 program.option('-c, --create <project>', 'Create a project')
-       .option('-u, --use <plugin>', 'Use Some Plugins');
+       .option('-u, --use <module>', 'Use Some Module')
+       .option('-p, --plugin <plugin>', 'Create a plugins');
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
 //   .option('-d, --debug', 'output extra debugging')
 //   .option('-s, --small', 'small pizza size')
@@ -28,15 +29,21 @@ program.option('-c, --create <project>', 'Create a project')
 program.parse(process.argv);
 const _dirPath = process.cwd();
 console.log(_dirPath, __dirname, path.basename);
+process.chdir(_dirPath);
 // console.log(program.use);
 // exit();
+//创建插件
+if(program.create === 'plugins') {
+   process.chdir(__dirname + '/plugins/yeoman/dist');
+   Spawn.sync('pwd', [], { stdio: 'inherit' });
+   Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
+}
 
-
-process.chdir(__dirname + '/plugins/' + program.use);
-Spawn.sync('npm', ['install'], { stdio: 'inherit' });
-Spawn.sync('npm', ['run', 'engaaged'], { stdio: 'inherit' });
-fs.writeFileSync(_dirPath + '/happy.js', fs.readFileSync(path.join(__dirname, 'plugins/test/bundle.js')));
-console.log(Chalk.red.bold.bgGreenBright('Mission Done...'));
+// process.chdir(__dirname + '/plugins/' + program.use);;
+// Spawn.sync('npm', ['install'], { stdio: 'inherit' });
+// Spawn.sync('npm', ['run', 'engaged'], { stdio: 'inherit' });
+// fs.writeFileSync(_dirPath + '/happy.js', fs.readFileSync(path.join(__dirname, 'plugins/test/bundle.js')));
+// console.log(Chalk.red.bold.bgGreenBright('Mission Done...'));
 
 
 // Spawn.sync('pwd', [], { stdio: 'inherit' });
