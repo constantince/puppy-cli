@@ -38,8 +38,10 @@ if(program.create === 'plugins') {
    Spawn.sync('pwd', [], { stdio: 'inherit' });
    Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
    //when done mv the dist
-   Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath + '/first-plugins/'])
-
+   // setTimeout(() => {
+      Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath + '/first-plugins/'])
+   // }, 60000)
+  
 }
 
 // process.chdir(__dirname + '/plugins/' + program.use);;
