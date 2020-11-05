@@ -19,9 +19,9 @@ const program = new Command();
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
-program.option('-c, --create <project>', 'Create a project')
+program.option('-c, --create <plugins>', 'Create a plugin')
        .option('-u, --use <module>', 'Use Some Module')
-       .option('-p, --plugin <plugin>', 'Create a plugins');
+       .option('-r, --run <project>', 'Run a project');
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
 //   .option('-d, --debug', 'output extra debugging')
 //   .option('-s, --small', 'small pizza size')
@@ -32,17 +32,19 @@ console.log(_dirPath, __dirname, path.basename);
 process.chdir(_dirPath);
 // console.log(program.use);
 // exit();
+
 //创建插件
 if(program.create === 'plugins') {
    process.chdir(__dirname + '/plugins/yeoman');
-   Spawn.sync('pwd', [], { stdio: 'inherit' });
    Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
    //when done mv the dist
-   // setTimeout(() => {
-      Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath + '/first-plugins/'])
-   // }, 60000)
-  
+   Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
 }
+//使用插件
+if(program.use === 'plugname') {
+
+}
+
 
 // process.chdir(__dirname + '/plugins/' + program.use);;
 // Spawn.sync('npm', ['install'], { stdio: 'inherit' });

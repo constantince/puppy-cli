@@ -36,4 +36,9 @@ class CreatePlugins {
     executeCommander() {
 
     }
+
+    //注册命令
+    registerCommander() {
+        
+    }
 }

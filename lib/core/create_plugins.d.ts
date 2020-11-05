@@ -5,4 +5,5 @@ declare class CreatePlugins {
     checkOutVersion(): boolean;
     upgradePlugins(): void;
     executeCommander(): void;
+    registerCommander(): void;
 }
