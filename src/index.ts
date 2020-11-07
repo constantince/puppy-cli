@@ -19,7 +19,7 @@ const program = new Command();
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
-program.option('-c, --create <plugins>', 'Create a plugin')
+program.option('-c, --create <plugin>', 'Create a plugin')
        .option('-u, --use <module>', 'Use Some Module')
        .option('-r, --run <project>', 'Run a project');
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
@@ -43,6 +43,14 @@ if(program.create === 'plugins') {
 //使用插件
 if(program.use === 'plugname') {
 
+}
+
+//创建业务项目
+if(program.run === 'seed') {
+   process.chdir(__dirname + '/plugins/yeoman');
+   Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
+   //when done mv the dist
+   Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
 }
 
 
