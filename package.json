@@ -33,6 +33,9 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-typescript": "^0.14.0",
     "generator-puppy": "^1.0.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.1",
+    "prettier": "^2.1.2",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5",
     "yo": "^3.1.1"
