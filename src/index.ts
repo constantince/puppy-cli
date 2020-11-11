@@ -9,6 +9,7 @@ import Spawn from 'cross-spawn';
 import path from 'path';
 import fs from 'fs';
 import { exit } from 'process';
+import gen from './core/run_generator';
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
@@ -40,17 +41,18 @@ if(program.create === 'plugins') {
    //when done mv the dist
    Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
 }
-//使用插件
-if(program.use === 'plugname') {
-
+//使用功能
+if(program.use === 'xxxx') {
+   
 }
 
 //创建业务项目
-if(program.run === 'seed') {
-   process.chdir(__dirname + '/plugins/yeoman');
-   Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
-   //when done mv the dist
-   Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
+if(program.run === 'react') {
+   gen();
+   // process.chdir(__dirname + '/plugins/yeoman');
+   // Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
+   // //when done mv the dist
+   // Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
 }
 
 
