@@ -9,7 +9,7 @@ import Spawn from 'cross-spawn';
 import path from 'path';
 import fs from 'fs';
 import { exit } from 'process';
-import gen from './core/run_generator';
+import create from './core/run_generator';
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
@@ -20,7 +20,7 @@ const program = new Command();
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
-program.option('-c, --create <plugin>', 'Create a plugin')
+program.option('-c, --create <plugin>', 'Create a project')
        .option('-u, --use <module>', 'Use Some Module')
        .option('-r, --run <project>', 'Run a project');
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
@@ -36,19 +36,20 @@ process.chdir(_dirPath);
 
 //创建插件
 if(program.create === 'plugins') {
-   process.chdir(__dirname + '/plugins/yeoman');
-   Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
+   // process.chdir(__dirname + '/plugins/yeoman');
+   //Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
    //when done mv the dist
-   Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
+   // Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
 }
 //使用功能
 if(program.use === 'xxxx') {
    
 }
-
+console.log(program.run, program.args);
 //创建业务项目
-if(program.run === 'react') {
-   gen();
+if(program.create) {
+   create(program.create, program.args[0]);
+   // generator(program.run);
    // process.chdir(__dirname + '/plugins/yeoman');
    // Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
    // //when done mv the dist
