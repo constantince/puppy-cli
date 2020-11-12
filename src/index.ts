@@ -3,7 +3,7 @@
 // const { Command } = require('commander');
 // const chalk = require('chalk');
 // const { bgGreenBright } = require('chalk');
-import { Command } from 'commander';
+import { Command, option } from 'commander';
 import Chalk from 'chalk';
 import Spawn from 'cross-spawn';
 import path from 'path';
@@ -28,6 +28,7 @@ program.option('-c, --create <Plugins>', 'Create plugins, test, project, module.
        .option('-t, --test <Unit>', 'Test a project')
        .option('-h, --help <List>', 'Get help list all commder')
        .option('-e, --register <commander>', 'resgister a commander')
+       .option('-p, --publish <plugins>', 'publish a module project or plugins')
 
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
 //   .option('-d, --debug', 'output extra debugging')
