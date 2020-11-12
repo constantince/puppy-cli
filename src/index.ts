@@ -10,6 +10,7 @@ import path from 'path';
 import fs from 'fs';
 import { exit } from 'process';
 import create from './core/run_generator';
+import register from './core/register_commander';
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
@@ -20,17 +21,22 @@ const program = new Command();
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 
-program.option('-c, --create <plugin>', 'Create a project')
-       .option('-u, --use <module>', 'Use Some Module')
-       .option('-r, --run <project>', 'Run a project');
+program.option('-c, --create <Plugins>', 'Create plugins, test, project, module.')
+       .option('-u, --use <Module>', 'Use Some Module')
+       .option('-r, --run <Project>', 'Run a project')
+       .option('-u, --upgrade <Module>', 'Update cli')
+       .option('-t, --test <Unit>', 'Test a project')
+       .option('-h, --help <List>', 'Get help list all commder')
+       .option('-e, --register <commander>', 'resgister a commander')
+
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
 //   .option('-d, --debug', 'output extra debugging')
 //   .option('-s, --small', 'small pizza size')
 //   .option('-p, --pizza-type <type>', 'flavour of pizza');
-program.parse(process.argv);
-const _dirPath = process.cwd();
-console.log(_dirPath, __dirname, path.basename);
-process.chdir(_dirPath);
+// program.parse(process.argv);
+// const _dirPath = process.cwd();
+// console.log(_dirPath, __dirname, path.basename);
+// process.chdir(_dirPath);
 // console.log(program.use);
 // exit();
 
@@ -45,7 +51,7 @@ if(program.create === 'plugins') {
 if(program.use === 'xxxx') {
    
 }
-console.log(program.run, program.args);
+// console.log(program.run, program.args);
 //创建业务项目
 if(program.create) {
    create(program.create, program.args[0]);
@@ -55,6 +61,17 @@ if(program.create) {
    // //when done mv the dist
    // Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
 }
+console.log(program.register);
+// if(program.register) {
+   // const register = require('./core/register_commander');
+   register("new", {
+      abbreviation: "-ne",
+      description: "测试测试",
+      core: false
+   }, () => {
+      require('./plugins/test/index');
+   })
+// }
 
 
 // process.chdir(__dirname + '/plugins/' + program.use);;

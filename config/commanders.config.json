@@ -1,0 +1,13 @@
+{
+    "create": {
+        "abbreviation": "-c",
+        "description": "创建项目，插件或者模块等",
+        "core": true
+    },
+    "run": {},
+    "new": {
+        "abbreviation": "-ne",
+        "description": "测试测试",
+        "core": false
+    }
+}
