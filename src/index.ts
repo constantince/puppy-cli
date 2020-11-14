@@ -11,6 +11,8 @@ import fs from 'fs';
 import { exit } from 'process';
 import create from './core/run_generator';
 import register from './core/register_commander';
+import osenv from 'osenv';
+import yaml from 'js-yaml'
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
@@ -20,7 +22,17 @@ const program = new Command();
 // Spawn.sync('yo', ['puppy'], { stdio: 'inherit' });
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
+const home = path.join(osenv.home(), '.puppy/.puppy.yml');
+const cache = fs.readFileSync(home, {encoding: 'utf-8'});
 
+const u = <any>yaml.safeLoad(cache);
+
+u.commandPickerMap.new = 'now go gogo';
+
+console.log(yaml.dump(u));
+// console.log(u.plugin['feflow-plugin-example']);
+
+exit();
 program.option('-c, --create <Plugins>', 'Create plugins, test, project, module.')
        .option('-u, --use <Module>', 'Use Some Module')
        .option('-r, --run <Project>', 'Run a project')
