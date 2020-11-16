@@ -7,5 +7,8 @@ interface Re {
 declare type Register<T> = {
     (commander: string, config: T, excute: () => void): void;
 };
-declare const register: Register<Re>;
-export default register;
+declare const _default: {
+    initialOrders: () => void;
+    register: Register<Re>;
+};
+export default _default;

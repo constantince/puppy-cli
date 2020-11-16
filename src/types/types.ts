@@ -1,5 +1,17 @@
-type OrdersType = 'create' | 'make' | 'do' | 'use';
+export type OrdersType = 'plugin' | 'create' | 'do' | 'use' | 'help';
+
+export interface OrderItem {
+    abbreviation: string,
+    description: string,
+    path: string,
+    core: boolean
+}
 
 export type OrderList = {
-    [K in OrdersType]: string[]
+    [K in OrdersType]: OrderItem
+}
+
+export type BaseOrder = {
+    native: OrderList,
+    plugins: object
 }
