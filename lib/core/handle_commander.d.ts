@@ -1,3 +1,4 @@
+import commander, { Command } from "commander";
 interface Re {
     abbreviation: string;
     description: string;
@@ -7,8 +8,17 @@ interface Re {
 declare type Register<T> = {
     (commander: string, config: T, excute: () => void): void;
 };
-declare const _default: {
-    initialOrders: () => void;
-    register: Register<Re>;
-};
-export default _default;
+declare const initialOrders: () => commander.Command;
+/**
+ * register("x", {
+    abbreviation: xxx,
+    description: xxxx is xxxx,
+    path: xxxx/xxx/xxx/xxx/xxx/xxx,
+    core: false
+ * }, () => {
+ *  yoojjpjejhsdw8u3ehh
+ * })
+ *
+ */
+declare const register: Register<Re>;
+export { initialOrders, register };

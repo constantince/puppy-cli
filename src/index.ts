@@ -3,26 +3,31 @@
 // const { Command } = require('commander');
 // const chalk = require('chalk');
 // const { bgGreenBright } = require('chalk');
-import { Command, option } from 'commander';
+// import { Command, option } from 'commander';
 import Chalk from 'chalk';
 import Spawn from 'cross-spawn';
 import path from 'path';
 import fs from 'fs';
 import { exit } from 'process';
 import create from './core/run_generator';
-import register from './core/handle_commander';
+// import register from './core/handle_commander';
 import { BaseOrder } from './types/types';
+import {initialOrders} from './core/handle_commander';
+import { Command } from "commander";
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
 // const Spawn = require("cross-spawn")
 // console.log(chalk.red.bold.bgWhite('Hello World'));
-const program = new Command();
+// const program = new Command();
 // program.version('0.0.1');
 // Spawn.sync('yo', ['puppy'], { stdio: 'inherit' });
 // console.log(Chalk.red.bold.bgGreenBright('Done...'));
 // Spawn.sync('rollup', ['-c', '-w'], { stdio: 'inherit' });
 // const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 // const cache = fs.readFileSync(home, {encoding: 'utf-8'});
+// const commander = initialOrders('plugin');
+
+// p = commander['p'].path
 
 // const u = <any>yaml.safeLoad(cache);
 
@@ -31,15 +36,15 @@ const program = new Command();
 // const ne = yaml.dump(u);
 // console.log(u.plugin['feflow-plugin-example']);
 // fs.writeFileSync(home, ne);
-exit();
-program.option('-c, --create <Plugins>', 'Create plugins, test, project, module.')
-       .option('-u, --use <Module>', 'Use Some Module')
-       .option('-r, --run <Project>', 'Run a project')
-       .option('-u, --upgrade <Module>', 'Update cli')
-       .option('-t, --test <Unit>', 'Test a project')
-       .option('-h, --help <List>', 'Get help list all commder')
-       .option('-e, --register <commander>', 'resgister a commander')
-       .option('-p, --publish <plugins>', 'publish a module project or plugins')
+// exit();
+// program.option('-c, --create <Plugins>', 'Create plugins, test, project, module.')
+//        .option('-u, --use <Module>', 'Use Some Module')
+//        .option('-r, --run <Project>', 'Run a project')
+//        .option('-u, --upgrade <Module>', 'Update cli')
+//        .option('-t, --test <Unit>', 'Test a project')
+//        .option('-h, --help <List>', 'Get help list all commder')
+//        .option('-e, --register <commander>', 'resgister a commander')
+//        .option('-p, --publish <plugins>', 'publish a module project or plugins')
 
 //   .option('-create, --yeoman <y>', 'Create a yeoman project')
 //   .option('-d, --debug', 'output extra debugging')
@@ -53,36 +58,36 @@ program.option('-c, --create <Plugins>', 'Create plugins, test, project, module.
 // exit();
 
 //创建插件
-if(program.create === 'plugins') {
+// if(program.create === 'plugins') {
    // process.chdir(__dirname + '/plugins/yeoman');
    //Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
    //when done mv the dist
    // Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
-}
+// }
 //使用功能
-if(program.use === 'xxxx') {
+// if(program.use === 'xxxx') {
    
-}
+// }
 // console.log(program.run, program.args);
 //创建业务项目
-if(program.create) {
-   create(program.create, program.args[0]);
+// if(program.create) {
+//    create(program.create, program.args[0]);
    // generator(program.run);
    // process.chdir(__dirname + '/plugins/yeoman');
    // Spawn.sync('npm', ['run', 'start'], { stdio: 'inherit' });
    // //when done mv the dist
    // Spawn.sync('mv', [__dirname + '/plugins/yeoman/dist/', _dirPath]);
-}
-console.log(program.register);
+// }
+// console.log(program.register);
 // if(program.register) {
    // const register = require('./core/register_commander');
-   register("new", {
-      abbreviation: "-ne",
-      description: "测试测试",
-      core: false
-   }, () => {
-      require('./plugins/test/index');
-   })
+   // register("new", {
+   //    abbreviation: "-ne",
+   //    description: "测试测试",
+   //    core: false
+   // }, () => {
+   //    require('./plugins/test/index');
+   // })
 // }
 
 
@@ -91,7 +96,17 @@ console.log(program.register);
 // Spawn.sync('npm', ['run', 'engaged'], { stdio: 'inherit' });
 // fs.writeFileSync(_dirPath + '/happy.js', fs.readFileSync(path.join(__dirname, 'plugins/test/bundle.js')));
 // console.log(Chalk.red.bold.bgGreenBright('Mission Done...'));
+// const program = new Command();
 
+
+
+// program.option('-u, --use <Module>', 'Use Some Module')
+// const p = program.parse(process.argv);
+
+//查找命令模块
+const { modulePath } = initialOrders().parse(process.argv);
+//执行模块
+modulePath.call();
 
 // Spawn.sync('pwd', [], { stdio: 'inherit' });
 
