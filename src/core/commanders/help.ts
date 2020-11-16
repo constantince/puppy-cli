@@ -1,5 +1,5 @@
-const help = () => {
-    console.log('hello helper');
+const help = (name) => {
+    console.log('hello helper', name);
 }
 
-export default help;
+module.exports = help;

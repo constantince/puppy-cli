@@ -25,6 +25,8 @@ let myConf:BaseOrder;
 if(ymlConfigurations) {
     myConf = yaml.safeLoad(ymlConfigurations) as BaseOrder;
 }
+
+// console.log(myConf);
 const program = new Command();
 const initialOrders = (): commander.Command => {
     /**
@@ -35,33 +37,51 @@ const initialOrders = (): commander.Command => {
      * get the paramers
      * excute modules
      */
-    const baseCommaner = myConf.native;
+   
     // const orderItem: OrderItem = baseCommaner[commander];
     // const _m = ['-' + orderItem.abbreviation, `--${commander} <params>`, orderItem.description];
     // program.option(_m.join(','));
+    const baseCommaner = myConf.source.native;
+    console.log('base is', baseCommaner);
     const keys = Object.keys(baseCommaner);
+    console.log(keys)
     for(let key of keys) {
         if(baseCommaner.hasOwnProperty(key)) {
             const orderItem: OrderItem = baseCommaner[key as OrdersType];
-            const _m = ['-' + orderItem.abbreviation, `--${key} <params>`, orderItem.description];
-            program.option(_m.join(','));
+            const _m = [orderItem.abbreviation, ` --${key} <params>`];
+            console.log(_m.join(','))
+            program.option(_m.join(','), orderItem.description);
         }
     }
     return program.parse(process.argv);
-    // return program;
+}
+
+// const getCurrentCommander = (commander: Command.Command) => {
+
+// }
+
+
+const calculateWitchCommander = (): OrdersType => {
+    const p = initialOrders()
+    const cur =  p.options;
+    console.log(cur, p);
+    const _c = cur.find((v: any) => p[v.long.replace(/-/g, '')]);
+    return _c.long.replace(/-/g, '');
 }
 
 
-const calculateWitchCommander = (p: commander.Command) => {
-    return p.options[0].Option.long.replace(/-/g, '');
-}
-
-
-const getCommanderFunc = (path: string, arg) => {
-    const calculateWitchCommander = require(path);
-    const p =  <any>myConf[calculateWitchCommander].path;
-    const func = require(p);
-    func.call(this, ...arg)
+const getCommanderFunc = () => {
+    const curname = calculateWitchCommander();
+    console.log('curname is' + curname)
+    const baseCommaner = myConf.source.native;
+    const calculate = baseCommaner[curname].path;
+    console.log(calculate)
+    const func = require(calculate);
+    console.log(func, program.args);
+    func.call(this, ...program.args);
+    // const p =  <any>myConf[calculateWitchCommander].path;
+    // const func = require(p);
+    // func.call(this, ...arg)
 }
 
 /**
@@ -84,7 +104,8 @@ const register: Register<Re> = (commander, configrations, excute) => {
     3 update yaml file
     4 excute plugin
 */
-    //
+
+
     // const result = fs.readFileSync(path.join(process.cwd(), '/config/commanders.config.json'));
     // const newCommander = {
     //     [commander]: configrations
@@ -99,4 +120,4 @@ const register: Register<Re> = (commander, configrations, excute) => {
     excute()
 }
 
-export { initialOrders, register };
+export { initialOrders, register, getCommanderFunc };

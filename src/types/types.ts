@@ -12,6 +12,10 @@ export type OrderList = {
 }
 
 export type BaseOrder = {
-    native: OrderList,
-    plugins: object
+    source: {
+        native: OrderList,
+        plugins: object
+    },
+    version: string
+   
 }

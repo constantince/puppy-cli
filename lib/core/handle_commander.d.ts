@@ -9,6 +9,7 @@ declare type Register<T> = {
     (commander: string, config: T, excute: () => void): void;
 };
 declare const initialOrders: () => commander.Command;
+declare const getCommanderFunc: () => void;
 /**
  * register("x", {
     abbreviation: xxx,
@@ -21,4 +22,4 @@ declare const initialOrders: () => commander.Command;
  *
  */
 declare const register: Register<Re>;
-export { initialOrders, register };
+export { initialOrders, register, getCommanderFunc };

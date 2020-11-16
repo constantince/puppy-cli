@@ -12,7 +12,7 @@ import { exit } from 'process';
 import create from './core/run_generator';
 // import register from './core/handle_commander';
 import { BaseOrder } from './types/types';
-import {initialOrders} from './core/handle_commander';
+import {initialOrders, getCommanderFunc} from './core/handle_commander';
 import { Command } from "commander";
 // console.log('take me home country home!！！！');
 // cosnt execa = require("execa");;
@@ -104,9 +104,11 @@ import { Command } from "commander";
 // const p = program.parse(process.argv);
 
 //查找命令模块
-const { modulePath } = initialOrders().parse(process.argv);
+const module = getCommanderFunc();
+
+console.log('module', module);
 //执行模块
-modulePath.call();
+// modulePath.call();
 
 // Spawn.sync('pwd', [], { stdio: 'inherit' });
 
