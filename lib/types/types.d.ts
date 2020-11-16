@@ -15,3 +15,6 @@ export declare type BaseOrder = {
     };
     version: string;
 };
+export interface Find<T> {
+    (name: T): string;
+}

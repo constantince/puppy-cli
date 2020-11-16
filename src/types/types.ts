@@ -17,5 +17,8 @@ export type BaseOrder = {
         plugins: object
     },
     version: string
-   
 }
+
+export interface Find<T> {
+    (name: T): string
+} 

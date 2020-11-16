@@ -3,7 +3,7 @@ import path from "path";
 import osenv from 'osenv';
 import yaml from 'js-yaml'
 import commander, {Command} from "commander";
-import { BaseOrder, OrderItem, OrderList, OrdersType } from '../types/types';
+import { BaseOrder, OrderItem, OrderList, OrdersType, Find } from '../types/types';
 console.log(__dirname);
 console.log(__filename);
 console.log(process.cwd());
@@ -40,7 +40,7 @@ const initialOrders = (): commander.Command => {
    
     // const orderItem: OrderItem = baseCommaner[commander];
     // const _m = ['-' + orderItem.abbreviation, `--${commander} <params>`, orderItem.description];
-    // program.option(_m.join(','));
+    // program.option(_m.join(','));;
     const baseCommaner = myConf.source.native;
     console.log('base is', baseCommaner);
     const keys = Object.keys(baseCommaner);
@@ -118,6 +118,69 @@ const register: Register<Re> = (commander, configrations, excute) => {
 
     //开始注册
     excute()
+}
+
+export default class CommanderProxy {
+
+    ctx: commander.Command;
+
+    baseCommander: OrderList | null = null;
+
+    conf: BaseOrder | null = null;
+
+    constructor() {
+        this.transformYaml();
+        this.ctx = this.initialCommanders();
+    }
+
+    private transformYaml() {
+        const home = path.join(osenv.home(), '.puppy/.puppy.yml');
+        const ymlConfigurations = fs.readFileSync(home, {encoding: 'utf-8'});
+        if(ymlConfigurations) {
+            this.conf = yaml.safeLoad(ymlConfigurations) as BaseOrder;
+        }
+    }
+
+    private initialCommanders(): commander.Command {
+        this.baseCommander = (<BaseOrder>this.conf).source.native;
+        const keys = Object.keys(this.baseCommander);
+        for(let key of keys) {
+            if(this.baseCommander.hasOwnProperty(key)) {
+                const orderItem: OrderItem = this.baseCommander[key as OrdersType];
+                const _m = [orderItem.abbreviation, ` --${key} <params>`];
+                console.log(_m.join(','))
+                program.option(_m.join(','), orderItem.description);
+            }
+        }
+        return program.parse(process.argv);
+    }
+
+    public register() {
+
+    }
+
+    private findCommander : Find<boolean> = () => {
+        const cur =  this.ctx.options;
+        const longCommander = cur.find((v: any) => cur[v.long.replace(/-/g, '')]);
+        return longCommander.long.replace(/-/g, '');
+    }
+
+    public getCommanderFunc() {
+        const curname = this.findCommander(true);
+        // console.log('curname is' + curname)
+        const baseCommaner = myConf.source.native;
+        const calculate = this.ctx[curname].path;
+        // console.log(calculate)
+        const func = require(calculate);
+        // console.log(func, program.args);
+        func.call(this, ...program.args);
+    }
+
+    public pickUpCommander() {
+
+    }
+
+
 }
 
 export { initialOrders, register, getCommanderFunc };

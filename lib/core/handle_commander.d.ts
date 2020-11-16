@@ -1,4 +1,5 @@
 import commander, { Command } from "commander";
+import { BaseOrder, OrderList } from '../types/types';
 interface Re {
     abbreviation: string;
     description: string;
@@ -22,4 +23,16 @@ declare const getCommanderFunc: () => void;
  *
  */
 declare const register: Register<Re>;
+export default class CommanderProxy {
+    ctx: commander.Command;
+    baseCommander: OrderList | null;
+    conf: BaseOrder | null;
+    constructor();
+    private transformYaml;
+    private initialCommanders;
+    register(): void;
+    private findCommander;
+    getCommanderFunc(): void;
+    pickUpCommander(): void;
+}
 export { initialOrders, register, getCommanderFunc };
