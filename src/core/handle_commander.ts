@@ -28,8 +28,10 @@ export default class CommanderProxy {
 
     curCmd: OrdersType = 'help';
 
+    storeCmd: BaseOrder;
+
     constructor() {
-        this.conf = this.transformYaml();
+        this.storeCmd = this.conf = this.transformYaml();
         this.ctx = this.initialCommanders();
         this.args = this.ctx.args;
     }
@@ -42,16 +44,16 @@ export default class CommanderProxy {
         } else {
             return this.writeJsonToYml();
         }
-        
+
     }
 
     // parse configration in local
     private writeJsonToYml(): BaseOrder {
         const localConfigurations = fs.readFileSync(path.join(__dirname, '../../../config/commanders.config.json'), {encoding: 'utf-8'}); 
-        const rawJSON = JSON.parse(localConfigurations);
-        const ymlJSON = yaml.dump(rawJSON);
+        this.storeCmd = JSON.parse(localConfigurations) as BaseOrder;
+        const ymlJSON = yaml.dump(this.storeCmd);
         fs.writeFileSync(home, ymlJSON);
-        return rawJSON;
+        return this.storeCmd;
     }
 
     //inital all native commander
@@ -69,32 +71,31 @@ export default class CommanderProxy {
     }
 
     // register commander
-    public register: Register = (commander, config, excute) => {
-
+    public register: Register = (commander: string, config: OrderItem, excute) => {
+        this.storeCmd.source.plugins[commander] = config;
+        excute.call(null);
     }
 
     // replace symbol
-    private trimString: FindOrder= (rawCommander) =>  {
+    private trimString: FindOrder = (rawCommander) =>  {
         if(!rawCommander) return 'help';
-        console.log(rawCommander);;
         return rawCommander.replace(/^-+/g, '') as OrdersType;
     }
 
     // find current command in terminal bash
     private findCommander: FindOrder = () => {
-        const cur =  this.ctx.options;
-        const longCommanderOptions = cur.find((v: any) => this.ctx[this.trimString(v.long)]);
-        this.curCmd = this.trimString(longCommanderOptions.long);
+        const cur:commander.Option[] = this.ctx.options;
+        const longCommanderOptions = cur.find(v => this.ctx[this.trimString(v.long)]);
+        if(longCommanderOptions) {
+            this.curCmd = this.trimString(longCommanderOptions.long);
+        }
         return this.curCmd;
     }
 
     // find the module of current commander then excute
     private getCommanderFunc() {
         const curname = this.findCommander();
-        // console.log('curname is' + curname)
-        // const baseCommaner = myConf.source.native;
-        const calculate = (this.conf?.source.native as OrderList)[curname].path;
-        // console.log(calculate)
+        const calculate = this.conf.source.native[curname].path;
         return require(calculate);
        
     }

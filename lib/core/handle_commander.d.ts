@@ -6,6 +6,7 @@ export default class CommanderProxy {
     conf: BaseOrder;
     args: string[];
     curCmd: OrdersType;
+    storeCmd: BaseOrder;
     constructor();
     private transformYaml;
     private writeJsonToYml;
