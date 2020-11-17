@@ -1,38 +1,18 @@
-import commander, { Command } from "commander";
-import { BaseOrder, OrderList } from '../types/types';
-interface Re {
-    abbreviation: string;
-    description: string;
-    path: string;
-    core: boolean;
-}
-declare type Register<T> = {
-    (commander: string, config: T, excute: () => void): void;
-};
-declare const initialOrders: () => commander.Command;
-declare const getCommanderFunc: () => void;
-/**
- * register("x", {
-    abbreviation: xxx,
-    description: xxxx is xxxx,
-    path: xxxx/xxx/xxx/xxx/xxx/xxx,
-    core: false
- * }, () => {
- *  yoojjpjejhsdw8u3ehh
- * })
- *
- */
-declare const register: Register<Re>;
+import commander from "commander";
+import { BaseOrder, OrderList, OrdersType, Register } from '../types/types';
 export default class CommanderProxy {
     ctx: commander.Command;
     baseCommander: OrderList | null;
-    conf: BaseOrder | null;
+    conf: BaseOrder;
+    args: string[];
+    curCmd: OrdersType;
     constructor();
     private transformYaml;
+    private writeJsonToYml;
     private initialCommanders;
-    register(): void;
+    register: Register;
+    private trimString;
     private findCommander;
-    getCommanderFunc(): void;
-    pickUpCommander(): void;
+    private getCommanderFunc;
+    excuteCommander(): OrdersType;
 }
-export { initialOrders, register, getCommanderFunc };

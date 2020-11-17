@@ -1,17 +1,12 @@
 {
-    "create": {
-        "abbreviation": "-c",
-        "description": "创建项目，插件或者模块等",
-        "core": true
+    "source" : {
+        "help": {
+            "commands": [ { "name": "help" } ],
+            "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/help.js",
+            "type": "native",
+            "abbreviation": "-h",
+            "description": "get some help from native"
+        }
     },
-    "run": {
-        "abbreviation": "-c",
-        "description": "运行项目，插件或者模块等",
-        "core": true
-    },
-    "new": {
-        "abbreviation": "-ne",
-        "description": "测试测试",
-        "core": false
-    }
+    "version": "1.0.0"
 }

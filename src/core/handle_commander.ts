@@ -3,122 +3,18 @@ import path from "path";
 import osenv from 'osenv';
 import yaml from 'js-yaml'
 import commander, {Command} from "commander";
-import { BaseOrder, OrderItem, OrderList, OrdersType, Find } from '../types/types';
-console.log(__dirname);
-console.log(__filename);
-console.log(process.cwd());
-console.log(path.resolve('./'));
-interface Re {
-    abbreviation: string,
-    description: string,
-    path: string,
-    core: boolean
-}
+import {
+    BaseOrder,
+    OrderItem,
+    OrderList,
+    OrdersType,
+    Register,
+    FindOrder,
+    Options
+} from '../types/types';
 
-type Register<T> = {
-    (commander: string, config: T, excute: () => void) : void
-}
-
-const home = path.join(osenv.home(), '.puppy/.puppy.yml');
-const ymlConfigurations = fs.readFileSync(home, {encoding: 'utf-8'});
-let myConf:BaseOrder;
-if(ymlConfigurations) {
-    myConf = yaml.safeLoad(ymlConfigurations) as BaseOrder;
-}
-
-// console.log(myConf);
 const program = new Command();
-const initialOrders = (): commander.Command => {
-    /**
-     * jude the commaner type
-     * download package
-     * read the yaml file
-     * gister the commander
-     * get the paramers
-     * excute modules
-     */
-   
-    // const orderItem: OrderItem = baseCommaner[commander];
-    // const _m = ['-' + orderItem.abbreviation, `--${commander} <params>`, orderItem.description];
-    // program.option(_m.join(','));;
-    const baseCommaner = myConf.source.native;
-    console.log('base is', baseCommaner);
-    const keys = Object.keys(baseCommaner);
-    console.log(keys)
-    for(let key of keys) {
-        if(baseCommaner.hasOwnProperty(key)) {
-            const orderItem: OrderItem = baseCommaner[key as OrdersType];
-            const _m = [orderItem.abbreviation, ` --${key} <params>`];
-            console.log(_m.join(','))
-            program.option(_m.join(','), orderItem.description);
-        }
-    }
-    return program.parse(process.argv);
-}
-
-// const getCurrentCommander = (commander: Command.Command) => {
-
-// }
-
-
-const calculateWitchCommander = (): OrdersType => {
-    const p = initialOrders()
-    const cur =  p.options;
-    console.log(cur, p);
-    const _c = cur.find((v: any) => p[v.long.replace(/-/g, '')]);
-    return _c.long.replace(/-/g, '');
-}
-
-
-const getCommanderFunc = () => {
-    const curname = calculateWitchCommander();
-    console.log('curname is' + curname)
-    const baseCommaner = myConf.source.native;
-    const calculate = baseCommaner[curname].path;
-    console.log(calculate)
-    const func = require(calculate);
-    console.log(func, program.args);
-    func.call(this, ...program.args);
-    // const p =  <any>myConf[calculateWitchCommander].path;
-    // const func = require(p);
-    // func.call(this, ...arg)
-}
-
-/**
- * register("x", {
-    abbreviation: xxx,
-    description: xxxx is xxxx,
-    path: xxxx/xxx/xxx/xxx/xxx/xxx,
-    core: false
- * }, () => {
- *  yoojjpjejhsdw8u3ehh
- * })
- * 
- */
-//
-const register: Register<Re> = (commander, configrations, excute) => {
-
-/*
-    1 check if exist
-    2 down load package
-    3 update yaml file
-    4 excute plugin
-*/
-
-
-    // const result = fs.readFileSync(path.join(process.cwd(), '/config/commanders.config.json'));
-    // const newCommander = {
-    //     [commander]: configrations
-    // }
-    // let json = JSON.parse(result.toString());
-
-    // json = JSON.stringify({...json, ...newCommander}, undefined, 4);
-
-    // fs.writeFileSync(path.join(process.cwd(), '/config/commanders.config.json'), json);
-
-    //开始注册
-    excute()
-}
+const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 
 export default class CommanderProxy {
 
@@ -126,61 +22,88 @@ export default class CommanderProxy {
 
     baseCommander: OrderList | null = null;
 
-    conf: BaseOrder | null = null;
+    conf: BaseOrder;
+
+    args: string[] = [];
+
+    curCmd: OrdersType = 'help';
 
     constructor() {
-        this.transformYaml();
+        this.conf = this.transformYaml();
         this.ctx = this.initialCommanders();
+        this.args = this.ctx.args;
     }
+    // yaml file transter to json object
+    private transformYaml(): BaseOrder {
 
-    private transformYaml() {
-        const home = path.join(osenv.home(), '.puppy/.puppy.yml');
-        const ymlConfigurations = fs.readFileSync(home, {encoding: 'utf-8'});
-        if(ymlConfigurations) {
-            this.conf = yaml.safeLoad(ymlConfigurations) as BaseOrder;
+        if(fs.existsSync(home)) {
+            const ymlConfigurations = fs.readFileSync(home, {encoding: 'utf-8'});
+            return yaml.safeLoad(ymlConfigurations) as BaseOrder;
+        } else {
+            return this.writeJsonToYml();
         }
+        
     }
 
+    // parse configration in local
+    private writeJsonToYml(): BaseOrder {
+        const localConfigurations = fs.readFileSync(path.join(__dirname, '../../../config/commanders.config.json'), {encoding: 'utf-8'}); 
+        const rawJSON = JSON.parse(localConfigurations);
+        const ymlJSON = yaml.dump(rawJSON);
+        fs.writeFileSync(home, ymlJSON);
+        return rawJSON;
+    }
+
+    //inital all native commander
     private initialCommanders(): commander.Command {
-        this.baseCommander = (<BaseOrder>this.conf).source.native;
+        this.baseCommander = this.conf.source.native;
         const keys = Object.keys(this.baseCommander);
         for(let key of keys) {
             if(this.baseCommander.hasOwnProperty(key)) {
                 const orderItem: OrderItem = this.baseCommander[key as OrdersType];
-                const _m = [orderItem.abbreviation, ` --${key} <params>`];
-                console.log(_m.join(','))
-                program.option(_m.join(','), orderItem.description);
+                const cmds = [orderItem.abbreviation, ` --${key} <params>`];
+                program.option(cmds.join(','), orderItem.description);
             }
         }
         return program.parse(process.argv);
     }
 
-    public register() {
+    // register commander
+    public register: Register = (commander, config, excute) => {
 
     }
 
-    private findCommander : Find<boolean> = () => {
+    // replace symbol
+    private trimString: FindOrder= (rawCommander) =>  {
+        if(!rawCommander) return 'help';
+        console.log(rawCommander);;
+        return rawCommander.replace(/^-+/g, '') as OrdersType;
+    }
+
+    // find current command in terminal bash
+    private findCommander: FindOrder = () => {
         const cur =  this.ctx.options;
-        const longCommander = cur.find((v: any) => cur[v.long.replace(/-/g, '')]);
-        return longCommander.long.replace(/-/g, '');
+        const longCommanderOptions = cur.find((v: any) => this.ctx[this.trimString(v.long)]);
+        this.curCmd = this.trimString(longCommanderOptions.long);
+        return this.curCmd;
     }
 
-    public getCommanderFunc() {
-        const curname = this.findCommander(true);
+    // find the module of current commander then excute
+    private getCommanderFunc() {
+        const curname = this.findCommander();
         // console.log('curname is' + curname)
-        const baseCommaner = myConf.source.native;
-        const calculate = this.ctx[curname].path;
+        // const baseCommaner = myConf.source.native;
+        const calculate = (this.conf?.source.native as OrderList)[curname].path;
         // console.log(calculate)
-        const func = require(calculate);
-        // console.log(func, program.args);
-        func.call(this, ...program.args);
+        return require(calculate);
+       
     }
 
-    public pickUpCommander() {
-
+    public excuteCommander(): OrdersType {
+        const func = this.getCommanderFunc();
+        func.apply(null, this.args);
+        return this.curCmd;
     }
-
-
 }
 
-export { initialOrders, register, getCommanderFunc };
+// export { initialOrders, register, getCommanderFunc };

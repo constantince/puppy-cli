@@ -15,6 +15,12 @@ export declare type BaseOrder = {
     };
     version: string;
 };
-export interface Find<T> {
-    (name: T): string;
-}
+export declare type Register = {
+    (commander: string, config: OrderItem, excute: () => void): void;
+};
+export declare type FindOrder = {
+    (rawCmd?: string): OrdersType;
+};
+export declare type Options<T, K extends keyof T> = {
+    (obj: T, key: T): T[K];
+};
