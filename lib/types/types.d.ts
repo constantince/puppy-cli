@@ -11,7 +11,9 @@ export declare type OrderList = {
 export declare type BaseOrder = {
     source: {
         native: OrderList;
-        plugins: object;
+        plugins: {
+            [k in string]: OrderItem;
+        };
     };
     version: string;
 };

@@ -1,8 +1,9 @@
 import runGen from '../run_generator';
 
 const create = (name: string) => {
-    runGen(name, name);
+    // console.log('run create name is', name);
+    runGen('generator-puppy', name);
 }
 
-export default create;
+module.exports = create;
 

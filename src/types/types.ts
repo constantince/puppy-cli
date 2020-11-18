@@ -1,5 +1,6 @@
 export type OrdersType = 'plugin' | 'create' | 'do' | 'use' | 'help';
 
+
 export interface OrderItem {
     abbreviation: string,
     description: string,
@@ -14,7 +15,9 @@ export type OrderList = {
 export type BaseOrder = {
     source: {
         native: OrderList,
-        plugins: object
+        plugins: {
+            [k in string]: OrderItem
+        }
     },
     version: string
 }
