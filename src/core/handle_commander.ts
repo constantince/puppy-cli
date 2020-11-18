@@ -50,7 +50,11 @@ export default class CommanderProxy {
 
     // parse configration in local
     private writeJsonToYml(): BaseOrder {
+<<<<<<< HEAD
         const localConfigurations = fs.readFileSync(path.join(__dirname, '../../../config/commanders.config.json'), { encoding: 'utf-8' });
+=======
+        const localConfigurations = fs.readFileSync(path.join(__dirname, '../../../config/commanders.config.json'), {encoding: 'utf-8'}); 
+>>>>>>> 13de6da787b192885f8eb65645af21e3d3831bce
         this.storeCmd = JSON.parse(localConfigurations) as BaseOrder;
         const ymlJSON = yaml.dump(this.storeCmd);
         fs.writeFileSync(home, ymlJSON);
@@ -85,8 +89,13 @@ export default class CommanderProxy {
     }
 
     // replace symbol
+<<<<<<< HEAD
     private trimString: FindOrder = (rawCommander) => {
         if (!rawCommander) return 'help';
+=======
+    private trimString: FindOrder = (rawCommander) =>  {
+        if(!rawCommander) return 'help';
+>>>>>>> 13de6da787b192885f8eb65645af21e3d3831bce
         return rawCommander.replace(/^-+/g, '') as OrdersType;
     }
 
