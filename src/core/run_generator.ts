@@ -3,6 +3,7 @@ import path from 'path';
 import osenv from 'osenv';
 import fs from 'fs';
 import Spawn from 'cross-spawn';
+import {CreateCmdList} from '../types/types';
 // const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 const env = yeoman.createEnv();
 
@@ -18,19 +19,36 @@ const isExist = function(addr: string): boolean {
     return fileExist;
 }
 
-//创建React项目
-const excute = function (generator: string, commander: string): void {
-    const tarGenerator = path.join(osenv.home(), '.puppy/node_modules', `${generator}/generators/app`, `${commander}.index.js`);
+
+//建立模板项目
+const _create = function(commander: CreateCmdList): void {
+    //传教模板的generator为官方模板
+    const generator = 'generator-puppy';
+    // 查找是官方模板是否存在
+    const tarGenerator = path.join(osenv.home(), '.puppy/node_modules', `${generator}`);
     const doExist = isExist(tarGenerator);
     if(doExist === false) {
         process.chdir(path.join(osenv.home(), '.puppy/'));
         Spawn.sync('cnpm', ['install', generator, '-D'], { stdio: 'inherit' });
     }
     // console.log('module is ', tarGenerator);
-    env.register(require.resolve(tarGenerator), `npm:${commander}`);
-    env.run(`npm:${commander}`, { 'skip-install': true }, function (err) {
+    env.register(require.resolve(tarGenerator), `create:${commander}`);
+    env.run(`create:${commander}`, { 'skip-install': true }, function (err) {
+        if(err) {
+            return console.log('opps! occured something wrong!!')
+        }
         console.log('done');
     });
+}
+
+//使用插件
+
+
+//使用generator
+
+//
+const excute = function (commander: CreateCmdList, args: string | string[]): void {
+    _create(commander)
 };
 
 

@@ -26,3 +26,4 @@ export declare type FindOrder = {
 export declare type Options<T, K extends keyof T> = {
     (obj: T, key: T): T[K];
 };
+export declare type CreateCmdList = 'plugins' | 'generator' | 'test';

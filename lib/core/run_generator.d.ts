@@ -1,2 +1,3 @@
-declare const excute: (generator: string, commander: string) => void;
+import { CreateCmdList } from '../types/types';
+declare const excute: (commander: CreateCmdList, args: string | string[]) => void;
 export default excute;

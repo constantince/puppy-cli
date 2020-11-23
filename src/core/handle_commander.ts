@@ -115,6 +115,7 @@ export default class CommanderProxy {
 
     public excuteCommander(): OrdersType {
         const func = this.getCommanderFunc();
+        console.log(this.args);
         func.apply(null, this.args);
         return this.curCmd;
     }
