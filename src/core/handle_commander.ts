@@ -106,16 +106,29 @@ export default class CommanderProxy {
     }
 
     // find the module of current commander then excute
-    private getCommanderFunc() {
+    private getCommanderFunc(): { (...args: string[]): void} | false {
         const curname = this.findCommander();
+        const cmdConf = this.conf.source.native[curname];
+        if(typeof cmdConf === undefined) return false;
         const calculate = this.conf.source.native[curname].path;
         return require(calculate);
 
     }
 
-    public excuteCommander(): OrdersType {
+    public checkCmdType(): 'native' | 'custom' {
+        const curname = this.findCommander();
+        const cmdConf = this.conf.source.native[curname];
+        if(typeof cmdConf === undefined) 'custom';
+        return 'native';
+        
+    }
+
+    public excuteCommander(): OrdersType | void {
         const func = this.getCommanderFunc();
-        console.log(this.args);
+        if(func === false) {
+            return console.log('Can\' not find cmd, your should install plugin related to first')
+        }
+        // console.log(this.args);
         func.apply(null, this.args);
         return this.curCmd;
     }

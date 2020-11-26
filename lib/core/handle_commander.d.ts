@@ -16,5 +16,6 @@ export default class CommanderProxy {
     private matchCmd;
     private findCommander;
     private getCommanderFunc;
-    excuteCommander(): OrdersType;
+    checkCmdType(): 'native' | 'custom';
+    excuteCommander(): OrdersType | void;
 }

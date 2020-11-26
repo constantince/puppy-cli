@@ -1,3 +1,2 @@
-import { CreateCmdList } from '../types/types';
-declare const excute: (commander: CreateCmdList, args: string | string[]) => void;
+declare const excute: (pluginName: string) => void;
 export default excute;

@@ -104,8 +104,8 @@ import { Command } from "commander";
 // const p = program.parse(process.argv);
 
 //查找命令模块
-const module = new Cmd;;
-module.excuteCommander()
+const CMD = new Cmd;
+CMD.excuteCommander();
 // console.log('module', module);
 //执行模块
 // modulePath.call();

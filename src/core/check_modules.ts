@@ -3,9 +3,9 @@ import fs from "fs";
 import osenv from "osenv";
 import path from "path";
 
-const CheckoutMoudles = (cmd: CreateCmdList, name: string): Promise<boolean> => {
+const CheckoutPlugin = (name: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
-        fs.stat(path.join(osenv.home(), `/lib/core/commanders/${name}.js`), (err, stat) => {
+        fs.stat(path.join(osenv.home(), `.puppy/node_modules/${name}`), (err, stat) => {
             if(err) {
                 resolve(false);
             }
@@ -14,4 +14,5 @@ const CheckoutMoudles = (cmd: CreateCmdList, name: string): Promise<boolean> => 
     });
 };
 
-export { CheckoutMoudles };
+
+export { CheckoutPlugin };

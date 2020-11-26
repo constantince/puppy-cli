@@ -9,9 +9,9 @@ const PREFIX = 'puppy-plugins-';
 
 const install = (pluginType: CreateCmdList, pluginName: string): void => {
     console.log(`puppy-plugins-${pluginName}`, pluginType);
-    CheckoutMoudles(pluginType, `puppy-plugins-${pluginName}`, ).then(exist => {
+    CheckoutMoudles(pluginType, `puppy-plugins-${pluginName}`, ).then((exist: boolean) => {
         if(exist) {
-            return 'Module has been installed.'
+            return console.log('Module has been installed.')
         }
         process.chdir(path.join(osenv.home(), '.puppy/'));
         Spawn.sync('npm', ['install', `puppy-plugins-${pluginName}`, '-D'], { stdio: 'inherit' });

@@ -12,7 +12,8 @@
                 "<node_internals>/**"
             ],
             "runtimeExecutable": "puppy",
-            "runtimeArgs": ["-i", "install", "plugins", "my-plugins"],
+            // "runtimeArgs": ["-i", "install", "plugins", "my-plugins"],
+            "runtimeArgs": ["-c", "create", "plugins"],
             // "runtimeArgs": ["puppy", "-h"],
             // "preLaunchTask": "echo",
             // "program": "${workspaceFolder}/src/index.ts",

@@ -4,6 +4,7 @@ import osenv from 'osenv';
 import fs from 'fs';
 import Spawn from 'cross-spawn';
 import {CreateCmdList} from '../types/types';
+import { CheckoutPlugin } from './check_modules';
 // const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 const env = yeoman.createEnv();
 
@@ -21,24 +22,51 @@ const isExist = function(addr: string): boolean {
 
 
 //建立模板项目
-const _create = function(commander: CreateCmdList): void {
+const _create = function(pluginName: string): void {
     //传教模板的generator为官方模板
-    const generator = 'generator-puppy';
+    // const generator = 'generator-puppy';
     // 查找是官方模板是否存在
-    const tarGenerator = path.join(osenv.home(), '.puppy/node_modules', `${generator}`);
-    const doExist = isExist(tarGenerator);
-    if(doExist === false) {
-        process.chdir(path.join(osenv.home(), '.puppy/'));
-        Spawn.sync('cnpm', ['install', generator, '-D'], { stdio: 'inherit' });
-    }
-    // console.log('module is ', tarGenerator);
-    env.register(require.resolve(tarGenerator), `create:${commander}`);
-    env.run(`create:${commander}`, { 'skip-install': true }, function (err) {
-        if(err) {
-            return console.log('opps! occured something wrong!!')
+    // const tarGenerator = path.join(osenv.home(), '.puppy/node_modules', `generator-puppy-${generator}`);
+    // const doExist = isExist(tarGenerator);
+    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', `generator-puppy-${pluginName}`, 'generators/app/index.js');
+    CheckoutPlugin(`generator-puppy-${pluginName}`).then(exist => {
+        if(!exist) {
+            console.log('plugins downloading...');
+            process.chdir(path.join(osenv.home(), '.puppy/'));
+            Spawn.sync('npm', ['install', `generator-puppy-${pluginName}`, '-D'], { stdio: 'inherit' });
+            // return console.log('Module is not installed.')
         }
-        console.log('done');
+        // const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', `generator-puppy-${pluginName}`);
+        // process.chdir(tarGenPath);
+        // console.log(process.cwd());
+
+
+        env.register(require.resolve(tarGenPath), `create`);
+        env.run(`create`, { 'skip-install': true }, function (err) {
+            if(err) {
+                return console.log('opps! occured something wrong!!')
+            }
+            console.log('done');
+        });
+
+        return;
+
     });
+
+    // if(doExist === false) {
+    //     // process.chdir(path.join(osenv.home(), '.puppy/'));
+    //     // Spawn.sync('cnpm', ['install', generator, '-D'], { stdio: 'inherit' });
+    //     console.log('Can\'t fint this module, please install first.');
+    //     return;
+    // }
+    // console.log('module is ', tarGenerator);
+    // env.register(require.resolve(tarGenerator), `create:${commander}`);
+    // env.run(`create:${commander}`, { 'skip-install': true }, function (err) {
+    //     if(err) {
+    //         return console.log('opps! occured something wrong!!')
+    //     }
+    //     console.log('done');
+    // });
 }
 
 //使用插件
@@ -47,8 +75,8 @@ const _create = function(commander: CreateCmdList): void {
 //使用generator
 
 //
-const excute = function (commander: CreateCmdList, args: string | string[]): void {
-    _create(commander)
+const excute = function (pluginName: string): void {
+    _create(pluginName)
 };
 
 
