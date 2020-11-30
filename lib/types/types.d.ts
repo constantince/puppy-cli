@@ -1,9 +1,9 @@
-export declare type OrdersType = 'plugin' | 'create' | 'do' | 'use' | 'help';
+export declare type OrdersType = 'help' | 'create' | 'install' | 'list';
 export interface OrderItem {
     abbreviation: string;
     description: string;
     path: string;
-    core: boolean;
+    type: string;
 }
 export declare type OrderList = {
     [K in OrdersType]: OrderItem;
@@ -11,14 +11,14 @@ export declare type OrderList = {
 export declare type BaseOrder = {
     source: {
         native: OrderList;
-        plugins: {
+        custom: {
             [k in string]: OrderItem;
         };
     };
     version: string;
 };
 export declare type Register = {
-    (commander: string, config: OrderItem, excute: () => void): void;
+    (commander: string, config: OrderItem, desc: string): void;
 };
 export declare type FindOrder = {
     (rawCmd?: string): OrdersType;
