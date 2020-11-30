@@ -80,6 +80,8 @@ export default class CommanderProxy {
     // register commander
     public register: Register = (commander: string, config: OrderItem, desc: string) => {
         //todo 2012 12 .01 // 注册接口
+        // transfoer cmd to format standard
+        //new YML().appendToYml(commander)
         return;
         // this.storeCmd.source.custom[commander] = config;
         // excute.call(null);

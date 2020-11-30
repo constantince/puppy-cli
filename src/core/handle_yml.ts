@@ -1,9 +1,10 @@
 import { promisify } from "util";
-import fs, { promises } from "fs";
+import fs from "fs";
 import osenv from "osenv";
 import path from "path";
 import yaml from 'js-yaml';
-import { OrdersType } from "../types/types";
+import { OrdersType, OrderItem } from "../types/types";
+
 const stat = promisify(fs.stat);
 const write = promisify(fs.writeFile);
 const read = promisify(fs.readFile);
@@ -52,7 +53,7 @@ export default class Yml {
 
         reddir(this.path).then((res: string[]) => {
            res.forEach(item => {
-               const name = item.replace(/\.ts$/, '') as OrdersType;
+               const name = item.replace(/\.[tj]s$/, '') as OrdersType;
                this.rawJson.source.native[name] = 
                 {
                     path: path.resolve(name),
@@ -65,8 +66,8 @@ export default class Yml {
         });
     }
 
-    public appendToYml(cmd: any):void {
-        this.rawJson.source.custom[cmd.commands.name] = cmd;
+    public appendToYml(cmd: OrderItem):void {
+        this.rawJson.source.custom[cmd.name] = cmd;
         this.parseJsonToYml();
     }
 

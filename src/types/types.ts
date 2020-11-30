@@ -2,6 +2,7 @@ export type OrdersType = 'help' | 'create' | 'install' | 'list';
 
 
 export interface OrderItem {
+    name: string,
     abbreviation: string,
     description: string,
     path: string,
