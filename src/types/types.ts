@@ -15,7 +15,7 @@ export type OrderList = {
 
 export type BaseOrder = {
     source: {
-        native: OrderList,
+        native: Partial<OrderList>,
         custom: {
             [k in string]: OrderItem
         }

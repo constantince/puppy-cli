@@ -14,31 +14,30 @@ export default class Yml {
 
     path: string = path.join(osenv.home(), '.puppy/', '.puppy.yml');
 
-    rawJson: any = {};
+    rawJson: BaseOrder;
 
     constructor () {
-        // this.checkIfYmlExist().then(err => {
-        //     if(err) {
-        //         this.rawJson = this.initialYml();
-        //     }
-        //     read(this.path, 'utf-8').then(res => {
-        //         this.rawJson = yaml.safeLoad(res);
-        //     });
-        // }).catch(ex => console.log)
+        this.rawJson = {
+            source: {
+                native: {},
+                custom:{}
+            },
+            version: '1'
+        };
         
     }
 
     private async getRawJson(): Promise<BaseOrder> {
-        const rawJsonInitialed = Object.keys(this.rawJson).length > 0;
+        const rawJsonInitialed = Object.keys(this.rawJson.source.native).length > 0;
         if(rawJsonInitialed) {
             return this.rawJson;
         }
         const Exist = await this.checkIfYmlExist();
         if(Exist) {
-            this.rawJson = await this.initialYml();
+            const yml = await read(this.path, {encoding: 'utf-8'});
+            this.rawJson = yaml.safeLoad(yml) as BaseOrder;
         } else {
-            const yml =  await read(this.path, {encoding: 'utf-8'});
-            this.rawJson = yaml.safeLoad(yml);
+            this.rawJson = await this.initialYml();
         }
         return this.rawJson;        
     }
@@ -48,61 +47,48 @@ export default class Yml {
         return stat(this.path);
     }
 
-    private parseJsonToYml(): Promise<boolean> {
+    private parseJsonToYml(): Promise<BaseOrder> {
         const ymlJSON = yaml.dump(this.rawJson);
         return write(this.path, ymlJSON).then(res => {
-            if(typeof res === "string") {
-                return false;
-            }
-            return true;
+            return this.rawJson;
         });
     }
 
-    private initialYml() {
-        this.rawJson = {
-            source: {
-                native: {
-
-                },
-                custom:{
-
-                }
-            },
-            version: 1
-        };
-
-        reddir(this.path).then((res: string[]) => {
-           res.forEach(item => {
-               const name = item.replace(/\.[tj]s$/, '') as OrdersType;
-               this.rawJson.source.native[name] = 
-                {
-                    path: path.resolve(name),
-                    type: 'native',
-                    abbreviation: `-${name[0]}`,
-                    description: ''
-                }
-            });
-            this.parseJsonToYml();
-        });
+    private async initialYml() {
+        const dir = await reddir(this.path);
+        
+        for(let i=0; i<dir.length; i++) {
+            const name = dir[i].replace(/\.[tj]s$/, '') as OrdersType;
+            this.rawJson.source.native[name] = 
+            {
+                path: path.resolve(name),
+                type: 'native',
+                abbreviation: `-${name[0]}`,
+                description: ''
+            }
+        }
+        return this.parseJsonToYml();
     }
 
     public async appendToYml(cmd: OrderItem): Promise<boolean> {
+        if(this.checkCmdFromYml(cmd.name)) {
+            return true;
+        }
         let json = await this.getRawJson();
         json.source.custom[cmd.name] = cmd;
-        return this.parseJsonToYml();
+        return !!this.parseJsonToYml();
         
     }
 
-    public checkCmdFromYml(cmd: string): string | false {
+    public checkCmdFromYml(cmd: string): boolean {
 
         const native = this.rawJson.source.native;
         const custom = this.rawJson.source.custom;
-
-        if(native[cmd]) {
-            return native[cmd].path;
+        if(native[cmd as OrdersType]) {
+            return true;
         }
         if(custom[cmd]) {
-            return custom[cmd].path;
+            return true;
         }
         return false;
     }  

@@ -114,6 +114,7 @@ export default class CommanderProxy {
         const curname = this.findCommander();
         const cmdConf = this.conf.source.native[curname];
         if(typeof cmdConf === undefined) return false;
+        // todo 20201202
         const calculate = this.conf.source.native[curname].path;
         return require(calculate);
 
@@ -132,7 +133,9 @@ export default class CommanderProxy {
         if(func === false) {
             return console.log('Can\' not find cmd, your should install plugin related to first')
         }
-        // console.log(this.args);
+        // todo 20201202 
+        // check cmd type
+        // excute callback at the second time;
         func.apply(null, this.args);
         return this.curCmd;
     }

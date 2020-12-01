@@ -31,8 +31,8 @@ const install = (pluginName: string): void => {
 
     
 
-    CheckoutPlugin(`${pluginName}`).then((exist: boolean) => {
-        console.log('done');
+    // CheckoutPlugin(`${pluginName}`).then((exist: boolean) => {
+        // console.log('done');
         // if(exist) {
         //     return console.log('Module has been installed.')
         // }
@@ -46,7 +46,7 @@ const install = (pluginName: string): void => {
         // const module = require(path.join(osenv.home(), '.puppy/', 'node_modules', pluginName, 'index.js'));
        
 
-    });
+    // });
 }
 
 module.exports = install;
