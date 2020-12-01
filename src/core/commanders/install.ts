@@ -10,8 +10,29 @@ const PREFIX = 'puppy-plugins-';
 //puppy -i install react
 const yml = new YML();
 const install = (pluginName: string): void => {
-    console.log(`${pluginName}`, 'pluginType');
+    const module = require("./happy.js");
+    module.call(this, function(str: string[], callback: any, desc: string){
+        
+        yml.appendToYml({
+            name: "happy",
+            abbreviation: '-ha',
+            description: "Fro test",
+            path: '/src/user/local/nginx/index.js',
+            type: 'custom'
+        }).then(res => {
+            if(res === true) {
+                console.log("successed....")
+            } else {
+                console.log("error:", res)
+            }
+        });
+    });
+
+
+    
+
     CheckoutPlugin(`${pluginName}`).then((exist: boolean) => {
+        console.log('done');
         // if(exist) {
         //     return console.log('Module has been installed.')
         // }
@@ -21,10 +42,11 @@ const install = (pluginName: string): void => {
 
         //write cmd .yml
 
-        const module = require(path.join(osenv.home(), '.puppy/', 'node_modules', pluginName, 'index.js'));
-        module.call();
+        
+        // const module = require(path.join(osenv.home(), '.puppy/', 'node_modules', pluginName, 'index.js'));
+       
 
-    })
+    });
 }
 
 module.exports = install;

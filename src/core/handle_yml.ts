@@ -3,7 +3,7 @@ import fs from "fs";
 import osenv from "osenv";
 import path from "path";
 import yaml from 'js-yaml';
-import { OrdersType, OrderItem } from "../types/types";
+import { OrdersType, OrderItem, BaseOrder } from "../types/types";
 
 const stat = promisify(fs.stat);
 const write = promisify(fs.writeFile);
@@ -16,16 +16,31 @@ export default class Yml {
 
     rawJson: any = {};
 
-    constructor() {
-        this.checkIfYmlExist().then(err => {
-            if(err) {
-                this.rawJson = this.initialYml();
-            }
-            read(this.path, 'utf-8').then(res => {
-                this.rawJson = yaml.safeLoad(res);
-            });
-        })
+    constructor () {
+        // this.checkIfYmlExist().then(err => {
+        //     if(err) {
+        //         this.rawJson = this.initialYml();
+        //     }
+        //     read(this.path, 'utf-8').then(res => {
+        //         this.rawJson = yaml.safeLoad(res);
+        //     });
+        // }).catch(ex => console.log)
         
+    }
+
+    private async getRawJson(): Promise<BaseOrder> {
+        const rawJsonInitialed = Object.keys(this.rawJson).length > 0;
+        if(rawJsonInitialed) {
+            return this.rawJson;
+        }
+        const Exist = await this.checkIfYmlExist();
+        if(Exist) {
+            this.rawJson = await this.initialYml();
+        } else {
+            const yml =  await read(this.path, {encoding: 'utf-8'});
+            this.rawJson = yaml.safeLoad(yml);
+        }
+        return this.rawJson;        
     }
 
     //
@@ -33,9 +48,14 @@ export default class Yml {
         return stat(this.path);
     }
 
-    private parseJsonToYml(): Promise<void> {
+    private parseJsonToYml(): Promise<boolean> {
         const ymlJSON = yaml.dump(this.rawJson);
-        return write(this.path, ymlJSON);
+        return write(this.path, ymlJSON).then(res => {
+            if(typeof res === "string") {
+                return false;
+            }
+            return true;
+        });
     }
 
     private initialYml() {
@@ -66,9 +86,11 @@ export default class Yml {
         });
     }
 
-    public appendToYml(cmd: OrderItem):void {
-        this.rawJson.source.custom[cmd.name] = cmd;
-        this.parseJsonToYml();
+    public async appendToYml(cmd: OrderItem): Promise<boolean> {
+        let json = await this.getRawJson();
+        json.source.custom[cmd.name] = cmd;
+        return this.parseJsonToYml();
+        
     }
 
     public checkCmdFromYml(cmd: string): string | false {
