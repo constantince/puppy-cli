@@ -13,9 +13,9 @@ export type OrderList = {
     [K in OrdersType]: OrderItem
 }
 
-export type BaseOrder = {
+export type BaseOrder<T = OrderList> = {
     source: {
-        native: Partial<OrderList>,
+        native: T,
         custom: {
             [k in string]: OrderItem
         }
@@ -28,11 +28,19 @@ export type Register = {
 }
 
 export type FindOrder = {
-    (rawCmd?: string): OrdersType
+    (rawCmd?: string): string
 }
 
 export type Options<T, K extends keyof T> = {
     (obj: T, key: T): T[K]
+}
+
+export type RegisterFn = {
+    (cmd: string[], log: Require, desc: string) : void
+}
+
+export type Require = {
+    (cmd: string[]): void
 }
 
 export type CreateCmdList  = 'plugins' | 'generator' | 'test';

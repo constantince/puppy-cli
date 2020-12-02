@@ -3,18 +3,20 @@ import fs from "fs";
 import osenv from "osenv";
 import path from "path";
 import yaml from 'js-yaml';
-import { OrdersType, OrderItem, BaseOrder } from "../types/types";
+import { OrdersType, OrderItem, BaseOrder, OrderList } from "../types/types";
 
 const stat = promisify(fs.stat);
 const write = promisify(fs.writeFile);
 const read = promisify(fs.readFile);
 const reddir = promisify(fs.readdir);
 
+type HandlBaseOrder = BaseOrder<Partial<OrderList>>
+
 export default class Yml {
 
     path: string = path.join(osenv.home(), '.puppy/', '.puppy.yml');
 
-    rawJson: BaseOrder;
+    rawJson: HandlBaseOrder;
 
     constructor () {
         this.rawJson = {
@@ -27,7 +29,7 @@ export default class Yml {
         
     }
 
-    private async getRawJson(): Promise<BaseOrder> {
+    private async getRawJson(): Promise<HandlBaseOrder> {
         const rawJsonInitialed = Object.keys(this.rawJson.source.native).length > 0;
         if(rawJsonInitialed) {
             return this.rawJson;
@@ -35,7 +37,7 @@ export default class Yml {
         const Exist = await this.checkIfYmlExist();
         if(Exist) {
             const yml = await read(this.path, {encoding: 'utf-8'});
-            this.rawJson = yaml.safeLoad(yml) as BaseOrder;
+            this.rawJson = yaml.safeLoad(yml) as HandlBaseOrder;
         } else {
             this.rawJson = await this.initialYml();
         }
@@ -47,7 +49,7 @@ export default class Yml {
         return stat(this.path);
     }
 
-    private parseJsonToYml(): Promise<BaseOrder> {
+    private parseJsonToYml(): Promise<HandlBaseOrder> {
         const ymlJSON = yaml.dump(this.rawJson);
         return write(this.path, ymlJSON).then(res => {
             return this.rawJson;
@@ -61,6 +63,7 @@ export default class Yml {
             const name = dir[i].replace(/\.[tj]s$/, '') as OrdersType;
             this.rawJson.source.native[name] = 
             {
+                name: name,
                 path: path.resolve(name),
                 type: 'native',
                 abbreviation: `-${name[0]}`,

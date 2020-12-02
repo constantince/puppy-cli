@@ -10,7 +10,9 @@ import {
     OrdersType,
     Register,
     FindOrder,
-    Options
+    Options,
+    RegisterFn,
+    Require
 } from '../types/types';
 
 const program = new Command();
@@ -26,7 +28,7 @@ export default class CommanderProxy {
 
     args: string[] = [];
 
-    curCmd: OrdersType = 'help';
+    curCmd: string = "help";
 
     storeCmd: BaseOrder;
 
@@ -62,8 +64,7 @@ export default class CommanderProxy {
         const keys = Object.keys(this.baseCommander);
         for (let key of keys) {
             if (this.baseCommander.hasOwnProperty(key)) {
-                const orderItem: OrderItem = this.baseCommander[key as OrdersType];
-                
+                const orderItem = this.baseCommander[key as OrdersType];
                 // program
                 // .option(`-${orderItem.abbreviation}, --${key} <action> [params]`)
                 // .action((options) => {
@@ -78,11 +79,14 @@ export default class CommanderProxy {
     }
 
     // register commander
-    public register: Register = (commander: string, config: OrderItem, desc: string) => {
+    public register: RegisterFn = (cmd, excute, desc) => {
         //todo 2012 12 .01 // 注册接口
         // transfoer cmd to format standard
+        if(cmd === this.args) {
+            excute.call(this, this.args);
+        }
         //new YML().appendToYml(commander)
-        return;
+        // return;
         // this.storeCmd.source.custom[commander] = config;
         // excute.call(null);
     }
@@ -110,33 +114,53 @@ export default class CommanderProxy {
     }
 
     // find the module of current commander then excute
-    private getCommanderFunc(): { (...args: string[]): void} | false {
-        const curname = this.findCommander();
-        const cmdConf = this.conf.source.native[curname];
+    private getCommanderFunc(): Require | RegisterFn | false {
+        const curname = this.findCommander() as OrdersType;
+        let cmdConf = this.conf.source.custom[curname];
+        if(this.getCmdType() === "native") {
+            cmdConf = this.conf.source.native[curname];
+        }
+        
         if(typeof cmdConf === undefined) return false;
         // todo 20201202
-        const calculate = this.conf.source.native[curname].path;
+        const calculate = cmdConf.path;
         return require(calculate);
 
     }
 
     public checkCmdType(): 'native' | 'custom' {
-        const curname = this.findCommander();
+        const curname = this.findCommander() as OrdersType;
         const cmdConf = this.conf.source.native[curname];
         if(typeof cmdConf === undefined) 'custom';
         return 'native';
         
     }
 
-    public excuteCommander(): OrdersType | void {
+    private getCmdType(): 'native' | 'custom' {
+        if(['help', 'create', 'install', 'list'].indexOf(this.curCmd) >= 0) {
+            return "native";
+        }
+        return 'custom';
+    }
+
+    public excuteCommander(): OrdersType | void | string {
         const func = this.getCommanderFunc();
         if(func === false) {
             return console.log('Can\' not find cmd, your should install plugin related to first')
         }
+
+        const m = require("./commanders/happy");
+        m.call(null, this.register);
+        //native cmd
+        // if(this.getCmdType() === 'native') {
+        //     func.apply(null, this.args);
+        // } else {
+        //     func.call(null, this.register);
+        // }
         // todo 20201202 
         // check cmd type
         // excute callback at the second time;
-        func.apply(null, this.args);
+        
         return this.curCmd;
     }
 }
