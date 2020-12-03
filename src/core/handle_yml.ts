@@ -67,7 +67,8 @@ export default class Yml {
                 path: path.resolve(name),
                 type: 'native',
                 abbreviation: `-${name[0]}`,
-                description: ''
+                description: '',
+                params: "--params"
             }
         }
         return this.parseJsonToYml();

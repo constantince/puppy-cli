@@ -6,7 +6,8 @@ export interface OrderItem {
     abbreviation: string,
     description: string,
     path: string,
-    type: string
+    type: string,
+    params: string
 }
 
 export type OrderList = {
@@ -36,11 +37,11 @@ export type Options<T, K extends keyof T> = {
 }
 
 export type RegisterFn = {
-    (cmd: string[], log: Require, desc: string) : void
+    (customCmd: string, moduleFunction: ModuleFunction, desc: string) : any
 }
 
-export type Require = {
-    (cmd: string[]): void
+export type ModuleFunction = {
+    (paramsStdin: string): void
 }
 
 export type CreateCmdList  = 'plugins' | 'generator' | 'test';

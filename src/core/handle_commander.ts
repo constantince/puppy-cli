@@ -5,14 +5,9 @@ import yaml from 'js-yaml'
 import commander, { Command } from "commander";
 import {
     BaseOrder,
-    OrderItem,
     OrderList,
     OrdersType,
-    Register,
-    FindOrder,
-    Options,
-    RegisterFn,
-    Require
+    RegisterFn
 } from '../types/types';
 
 const program = new Command();
@@ -20,22 +15,20 @@ const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 
 export default class CommanderProxy {
 
-    ctx: commander.Command;
-
     baseCommander: OrderList | null = null;
 
     conf: BaseOrder;
 
     args: string[] = [];
 
-    curCmd: string = "help";
-
     storeCmd: BaseOrder;
 
     constructor() {
+        //命令转换器
         this.storeCmd = this.conf = this.transformYaml();
-        this.ctx = this.initialCommanders();
-        this.args = this.ctx.args;
+        //初始化命令
+        this.initialCommanders();
+
     }
     // yaml file transter to json object
     private transformYaml(): BaseOrder {
@@ -58,110 +51,60 @@ export default class CommanderProxy {
         return this.storeCmd;
     }
 
-    //inital all native commander
-    private initialCommanders(): commander.Command {
-        this.baseCommander = this.conf.source.native;
-        const keys = Object.keys(this.baseCommander);
-        for (let key of keys) {
-            if (this.baseCommander.hasOwnProperty(key)) {
-                const orderItem = this.baseCommander[key as OrdersType];
-                // program
-                // .option(`-${orderItem.abbreviation}, --${key} <action> [params]`)
-                // .action((options) => {
-                //     console.log(options.action);
-                // });
-                // program.command(`${key} <source> [${orderItem.description}]`)
-                const cmds = [orderItem.abbreviation, ` --${key} <params> [params2]`];
-                program.option(cmds.join(','), orderItem.description);
-            }
-        }
-        return program.parse(process.argv);
+    // inital all native commander
+    private initialCommanders(): void {
+        const allCommands = { 
+            ...this.conf.source.native,
+            ...this.conf.source.custom
+        };
+
+        for (let key in allCommands) {
+            if (allCommands.hasOwnProperty(key)) {
+                const orderItem = allCommands[key as OrdersType];
+                const {abbreviation, params, description, path} = orderItem;
+
+                program
+                .command(key)
+                .option(
+                    `${abbreviation}, ${params} [name]`, 
+                    orderItem.description
+                )
+                .action(args => {
+                    console.log(
+                        "commander:",args._name,'\n',
+                        "module path:", path,'\n',
+                        "desc:", description,'\n',
+                        "params", args[params.replace('--', '')]
+                    )
+                    //single params to do let it mutiple
+                    const arg = args[params.replace('--', '')];
+                    const func = require(path);
+                    if(this.getCmdType(args._name) === "native") {
+                        func.call(this, arg);
+                    } else {
+                        // 第二次执行函数体，第一次执行的是命令写入
+                        const register : RegisterFn = (cmdNotUse, modules, descNotUse) => {
+                            modules.call(this, arg);
+                        }
+
+                        func.call(this, register);
+                    }
+                })
+            }}
     }
 
-    // register commander
-    public register: RegisterFn = (cmd, excute, desc) => {
-        //todo 2012 12 .01 // 注册接口
-        // transfoer cmd to format standard
-        if(cmd === this.args) {
-            excute.call(this, this.args);
-        }
-        //new YML().appendToYml(commander)
-        // return;
-        // this.storeCmd.source.custom[commander] = config;
-        // excute.call(null);
-    }
-
-    // replace symbol
-    private trimString: FindOrder = (rawCommander) =>  {
-        if(!rawCommander) return 'help';
-        return rawCommander.replace(/^-+/g, '') as OrdersType;
-    }
-
-    private matchCmd = (cmd: string): string => {
-        const re = cmd.match(/(?<=--)[^-\s]+(?=\s+)/);
-        if(re === null) return 'help';
-        return re[0];
-    }
-
-    // find current command in terminal bash
-    private findCommander: FindOrder = () => {
-        const cur: commander.Option[] = this.ctx.options;
-        const longCommanderOptions = cur.find(v => this.ctx.rawArgs[2] === v.short);
-        if (longCommanderOptions) {
-            this.curCmd = this.trimString(longCommanderOptions.long);
-        }
-        return this.curCmd;
-    }
-
-    // find the module of current commander then excute
-    private getCommanderFunc(): Require | RegisterFn | false {
-        const curname = this.findCommander() as OrdersType;
-        let cmdConf = this.conf.source.custom[curname];
-        if(this.getCmdType() === "native") {
-            cmdConf = this.conf.source.native[curname];
-        }
-        
-        if(typeof cmdConf === undefined) return false;
-        // todo 20201202
-        const calculate = cmdConf.path;
-        return require(calculate);
-
-    }
-
-    public checkCmdType(): 'native' | 'custom' {
-        const curname = this.findCommander() as OrdersType;
-        const cmdConf = this.conf.source.native[curname];
-        if(typeof cmdConf === undefined) 'custom';
-        return 'native';
-        
-    }
-
-    private getCmdType(): 'native' | 'custom' {
-        if(['help', 'create', 'install', 'list'].indexOf(this.curCmd) >= 0) {
+    // get the cmd stdin console panel
+    private getCmdType(cmd: string): 'native' | 'custom' {
+        if(['help', 'create', 'install', 'list'].indexOf(cmd) >= 0) {
             return "native";
         }
         return 'custom';
     }
 
-    public excuteCommander(): OrdersType | void | string {
-        const func = this.getCommanderFunc();
-        if(func === false) {
-            return console.log('Can\' not find cmd, your should install plugin related to first')
-        }
-
-        const m = require("./commanders/happy");
-        m.call(null, this.register);
-        //native cmd
-        // if(this.getCmdType() === 'native') {
-        //     func.apply(null, this.args);
-        // } else {
-        //     func.call(null, this.register);
-        // }
-        // todo 20201202 
-        // check cmd type
-        // excute callback at the second time;
-        
-        return this.curCmd;
+    // start to excute your command
+    public excuteCommander(): void {
+        // 开始执行命令
+        program.parse(process.argv);
     }
 }
 
