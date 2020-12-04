@@ -13,8 +13,6 @@ const CmdDesctions:CmdDesctions = {
 }
 const happy = (register: any) => {
     console.log("happy plugins loaded...");
-
-
     register(CmdDesctions, (log: string) => {
         console.log(log);
     }, "log your logger");

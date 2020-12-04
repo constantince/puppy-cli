@@ -11,6 +11,7 @@ puppy-cli 为cli(commander line interact)工程化工具。指在为提高工作
 
 ##### 命令
 ```bash
+    puppy create -p puppy-plugins-test
 
     puppy -i install xxx # 安装相关的插件
 
@@ -55,6 +56,9 @@ puppy-cli 本身只有极少的命令，通过插件和组件拼装的方式来�
   
   ```bash
     puppu -i install puppy-plugins-xxxx
+    puppy install puppy-plugins-xxxx
+    puppy install generatro-puppy-xxx
+    puppy install puppy-tester-xxxx
   ```
 安装好插件以后，你可以阅读插件文档，了解通过何种命令来启动插件。
 

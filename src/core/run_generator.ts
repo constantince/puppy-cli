@@ -28,15 +28,15 @@ const _create = function(pluginName: string): void {
     // 查找是官方模板是否存在
     // const tarGenerator = path.join(osenv.home(), '.puppy/node_modules', `generator-puppy-${generator}`);
     // const doExist = isExist(tarGenerator);
-    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', `generator-puppy-${pluginName}`, 'generators/app/index.js');
-    CheckoutPlugin(`generator-puppy-${pluginName}`).then(exist => {
+    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', `${pluginName}`, 'generators/app/index.js');
+    CheckoutPlugin(`${pluginName}`).then(exist => {
         if(!exist) {
             console.log('plugins downloading...');
             process.chdir(path.join(osenv.home(), '.puppy/'));
-            Spawn.sync('npm', ['install', `generator-puppy-${pluginName}`, '-D'], { stdio: 'inherit' });
+            Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
             // return console.log('Module is not installed.')
         }
-        // const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', `generator-puppy-${pluginName}`);
+        // const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', `${pluginName}`);
         // process.chdir(tarGenPath);
         // console.log(process.cwd());
 

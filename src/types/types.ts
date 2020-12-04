@@ -36,12 +36,23 @@ export type Options<T, K extends keyof T> = {
     (obj: T, key: T): T[K]
 }
 
+type Cms = {
+    [k in 'abbreviation' | 'params' | 'description']: string
+}
+type CmdDesctions = {
+    name: string,
+    path: string,
+} & Partial<Cms>;
+
 export type RegisterFn = {
-    (customCmd: string, moduleFunction: ModuleFunction, desc: string) : any
+    (customCmd: CmdDesctions, moduleFunction: ModuleFunction, desc: string) : any
 }
 
 export type ModuleFunction = {
     (paramsStdin: string): void
 }
+
+export type InstallModuleType = 'plugins' | 'generator' | 'test';
+export const InstallModuleType = ['plugins', 'generator', 'test'];
 
 export type CreateCmdList  = 'plugins' | 'generator' | 'test';

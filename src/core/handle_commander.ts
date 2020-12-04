@@ -80,7 +80,9 @@ export default class CommanderProxy {
                     const arg = args[params.replace('--', '')];
                     const func = require(path);
                     if(this.getCmdType(args._name) === "native") {
-                        func.call(this, arg);
+                        func.call(this, arg).then((res: boolean) => {
+                            console.log(args._name, 'excution stat:', res ? 'success': 'failed');
+                        });
                     } else {
                         // 第二次执行函数体，第一次执行的是命令写入
                         const register : RegisterFn = (cmdNotUse, modules, descNotUse) => {
