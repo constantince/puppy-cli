@@ -10,6 +10,14 @@ export interface OrderItem {
     params: string
 }
 
+export type NativeFunc = {
+    (params: string): Promise<boolean>
+}
+
+export type CustomFunc = {
+    (f: RegisterFn): Promise<boolean>
+}
+
 export type OrderList = {
     [K in OrdersType]: OrderItem
 }

@@ -4,23 +4,26 @@ import Spawn from "cross-spawn";
 import path from "path";
 import osenv from "osenv";
 import YML from "../handle_yml";
-
+import { promisify } from "util";
+import fs from "fs";
 type InstallLike<T = boolean> = {
     (plugins: string): Promise<T>
 }
+const stat = promisify(fs.stat);
+
 const yml = new YML();
 
-const install:InstallLike<string> = (pluginName) => {
-    return CheckoutPlugin(`${pluginName}`).then((exist: boolean) => {
-        if(exist) {
-            return "exit";
-        }
-        process.chdir(path.join(osenv.home(), '.puppy/'));
-        Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
-        //引入模块
-        const modulePath = path.join(osenv.home(), '.puppy/', 'node_modules', pluginName, 'index.js');
-        return modulePath;
-    })
+const install:InstallLike<string> = async (pluginName) => {
+    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', pluginName, 'generators/app/index.js');
+    const exist = stat(tarGenPath);
+    if(exist) {
+        return "exit";
+    }
+    process.chdir(path.join(osenv.home(), '.puppy/'));
+    Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
+    //引入模块
+    const modulePath = path.join(osenv.home(), '.puppy/', 'node_modules', pluginName, 'index.js');
+    return modulePath;
 }
 
 const install_tester = (modules: string) => {
@@ -43,7 +46,7 @@ const after_install:InstallLike = (modulePath) => {
             type: 'custom',
             params: 'params'
         }
-        const result = await yml.appendToYml({
+        await yml.appendToYml({
            ...cmd,
            ...defaults
         });
@@ -61,7 +64,7 @@ const installPlugins:InstallLike = async (pluginsName) => {
     if(installResult === "exit") {
         return false;
     }
-    const registerResult = after_install(pluginsName);
+    const registerResult = await after_install(pluginsName);
     return registerResult;
 }
 

@@ -14,7 +14,7 @@
             "runtimeExecutable": "puppy",
             // "runtimeArgs": ["happy", "-h", "birthday"],
             // "runtimeArgs": ["install", "-p", "generator-puppy-test"],
-            "runtimeArgs": ["create", "-t", "plugins"],
+            "runtimeArgs": ["create", "-p", "plugins"],
             // "runtimeArgs": ["puppy", "-h"],
             // "preLaunchTask": "echo",
             // "program": "${workspaceFolder}/src/index.ts",

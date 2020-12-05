@@ -7,7 +7,9 @@ import {
     BaseOrder,
     OrderList,
     OrdersType,
-    RegisterFn
+    RegisterFn,
+    NativeFunc,
+    CustomFunc
 } from '../types/types';
 
 const program = new Command();
@@ -79,17 +81,17 @@ export default class CommanderProxy {
                     //single params to do let it mutiple
                     const arg = args[params.replace('--', '')];
                     const func = require(path);
-                    if(this.getCmdType(args._name) === "native") {
-                        func.call(this, arg).then((res: boolean) => {
+                    if(this.getCmdType(args._name) === "native") {// 本地命令
+                        (func as NativeFunc).call(this, arg).then((res: boolean) => {
                             console.log(args._name, 'excution stat:', res ? 'success': 'failed');
                         });
-                    } else {
+                    } else { //自定义命令
                         // 第二次执行函数体，第一次执行的是命令写入
                         const register : RegisterFn = (cmdNotUse, modules, descNotUse) => {
                             modules.call(this, arg);
                         }
 
-                        func.call(this, register);
+                        (func as CustomFunc).call(this, register);
                     }
                 })
             }}
