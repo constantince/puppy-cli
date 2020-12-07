@@ -46,8 +46,8 @@ const after_install:InstallLike = (modulePath) => {
             params: 'params'
         }
         await yml.appendToYml({
-           ...cmd,
-           ...defaults
+           ...defaults,
+           ...cmd
         });
     };
     return new Promise((resolve, reject) => {
