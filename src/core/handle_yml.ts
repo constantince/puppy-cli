@@ -51,6 +51,7 @@ export default class Yml {
 
     private parseJsonToYml(): Promise<HandlBaseOrder> {
         const ymlJSON = yaml.dump(this.rawJson);
+        // TODO: appendFile
         return write(this.path, ymlJSON).then(res => {
             return this.rawJson;
         });

@@ -68,7 +68,7 @@ const installPlugins:InstallLike = async (pluginsName) => {
     return registerResult;
 }
 
-const checkModuleType = (mdName:string): InstallLike => {
+const checkModuleType = (mdName:string): Promise<boolean> => {
     /**
     puppy install puppy-plugins-xxxx
     puppy install generator-puppy-xxx
@@ -76,7 +76,7 @@ const checkModuleType = (mdName:string): InstallLike => {
      */
 
     // if(/generator-puppy/.test(mdName)) {
-        return installPlugins;
+        return installPlugins(mdName);
     // }
 
     // if(/puppy-test/.test(mdName)) {
@@ -93,5 +93,5 @@ const checkModuleType = (mdName:string): InstallLike => {
 
 //返回一个promise 安装成功和失败
 module.exports = function(params: string):Promise<boolean> {
-    return checkModuleType.call(null, params)(params);
+    return checkModuleType.call(null, params);
 };

@@ -86,7 +86,7 @@ export default class CommanderProxy {
                             console.log(args._name, 'excution stat:', res ? 'success': 'failed');
                         });
                     } else { //自定义命令
-                        // 第二次执行函数体，第一次执行的是命令写入
+                        // 第二次执行函数体，第一次执行的是命令写入 TODO: child_process.exec("xxxxxx.index")
                         const register : RegisterFn = (cmdNotUse, modules, descNotUse) => {
                             modules.call(this, arg);
                         }
