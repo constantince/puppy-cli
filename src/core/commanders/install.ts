@@ -9,21 +9,20 @@ import fs from "fs";
 type InstallLike<T = boolean> = {
     (plugins: string): Promise<T>
 }
-const stat = promisify(fs.stat);
+const exists = promisify(fs.exists);
 
 const yml = new YML();
 
 const install:InstallLike<string> = async (pluginName) => {
-    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', pluginName, 'generators/app/index.js');
-    const exist = stat(tarGenPath);
+    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', pluginName, 'lib/index.js');
+    const exist = await exists(tarGenPath);
     if(exist) {
         return "exit";
     }
     process.chdir(path.join(osenv.home(), '.puppy/'));
     Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
-    //引入模块
-    const modulePath = path.join(osenv.home(), '.puppy/', 'node_modules', pluginName, 'index.js');
-    return modulePath;
+    //返回
+    return tarGenPath;
 }
 
 const install_tester = (modules: string) => {
@@ -64,7 +63,7 @@ const installPlugins:InstallLike = async (pluginsName) => {
     if(installResult === "exit") {
         return false;
     }
-    const registerResult = await after_install(pluginsName);
+    const registerResult = await after_install(installResult);
     return registerResult;
 }
 
