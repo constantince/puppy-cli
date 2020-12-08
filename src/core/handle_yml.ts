@@ -10,7 +10,7 @@ const write = promisify(fs.writeFile);
 const read = promisify(fs.readFile);
 const reddir = promisify(fs.readdir);
 
-type HandlBaseOrder = BaseOrder<Partial<OrderList>>
+type HandlBaseOrder = BaseOrder<OrderList>
 
 export default class Yml {
 

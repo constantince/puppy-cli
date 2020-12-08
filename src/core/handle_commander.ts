@@ -1,7 +1,9 @@
 import fs from "fs";
 import path from "path";
 import osenv from 'osenv';
-import yaml from 'js-yaml'
+import yaml from 'js-yaml';
+import Chalk from 'chalk';
+
 import commander, { Command } from "commander";
 import {
     BaseOrder,
@@ -83,7 +85,9 @@ export default class CommanderProxy {
                     const func = require(path);
                     if(this.getCmdType(args._name) === "native") {// 本地命令
                         (func as NativeFunc).call(this, arg).then((res: boolean) => {
-                            console.log(args._name, 'excution stat:', res ? 'success': 'failed');
+                            console.log(
+                                Chalk.underline.bold.bgGray(args._name, 'excution stat:', res ? 'success': 'failed')
+                            );
                         });
                     } else { //自定义命令
                         // 第二次执行函数体，第一次执行的是命令写入 TODO: child_process.exec("xxxxxx.index")
