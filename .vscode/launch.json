@@ -12,8 +12,9 @@
                 "<node_internals>/**"
             ],
             "runtimeExecutable": "puppy",
+            "runtimeArgs": ["list", "-a", "all"],
             // "runtimeArgs": ["happy", "-h", "birthday"],
-            "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
+            // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
             // "runtimeArgs": ["create", "-p", "plugins"],
             // "runtimeArgs": ["puppy", "-h"],
             // "preLaunchTask": "echo",

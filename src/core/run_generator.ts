@@ -8,7 +8,7 @@ import { CreateCmdList, NativeFunc } from '../types/types';
 import { CheckoutPlugin } from './check_modules';
 // const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 const env = yeoman.createEnv();
-const stat = promisify(fs.stat);
+const exists = promisify(fs.exists);
 // const tarGenerator = path.join(__dirname, '../../node_modules', 'generator-puppy/generators/app', 'react.index.js');
 
 //env.register(require.resolve('./generators/app/index.js'), 'npm:index');
@@ -28,9 +28,9 @@ const _createPlugins = async function (): Promise<boolean> {
     const generator = 'generator-puppy-plugins';
     const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', generator, 'generators/app/index.js');
     // 查找是官方模板是否存在
-    const exit = await stat(tarGenPath);
+    const exit = await exists(tarGenPath);
     if (!exit) { //未下载，下载官方模板
-        console.log('plugins downloading...');
+        console.log('generators downloading...');
         process.chdir(path.join(osenv.home(), '.puppy/'));
         const installResult = await Spawn.sync('npm', ['install', generator, '-D'], { stdio: 'inherit' });
         return Boolean(installResult);

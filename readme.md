@@ -39,33 +39,43 @@ puppy-cli 本身只有极少的命令，通过插件和组件拼装的方式来�
   ```
 - 开始开发你的插件
     ```ts
-    const YourPluginName = function(ctx) {
-        console.log('hello puppy plugins world');
-        ctx.commander.register('-xxx, xxxx <params>', (...args) => {
-            //实际插件函数执行主体
-            console.log('hi, i am new plugins', ...args)
-        })
+    type Cms = {
+      [k in 'abbreviation' | 'params' | 'description']: string
     }
+    type CmdDesctions = {
+        name: string
+    } & Partial<Cms>;
 
-    module.exports = YourPluginName;
+    // write your cmd configrations here:
+    const CmdDesctions:CmdDesctions = {
+        name: '', // command name
+        abbreviation: '', // first params abbreviation
+        params: '', // fisrt params name
+    };
+    const happy = (register: any):void => {
+        console.log('happy plugins loaded...');
+        register(CmdDesctions, (log: string) => {
+            // write or import modules or logic here
+            console.log(log);
+        }, 'write your plugins descriptions or specification here');
+    };
+
+    module.exports = happy;
     ```
 - 发布你的插件
     ```bash
-    npm publish
+        npm publish
     ```
 
 - 安装插件
   
   ```bash
-    puppu -i install puppy-plugins-xxxx
-    puppy install puppy-plugins-xxxx
-    puppy install generatro-puppy-xxx
-    puppy install puppy-tester-xxxx
+    puppy install -p puppy-plugins-xxxx
   ```
 安装好插件以后，你可以阅读插件文档，了解通过何种命令来启动插件。
 
 -  使用插件
   ```bash
-    puppy -x xxxx
+    puppy yourcmds -p xxxx
   ```
 <font>

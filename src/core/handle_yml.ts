@@ -29,7 +29,7 @@ export default class Yml {
         
     }
 
-    private async getRawJson(): Promise<HandlBaseOrder> {
+    public async getRawJson(): Promise<HandlBaseOrder> {
         const rawJsonInitialed = Object.keys(this.rawJson.source.native).length > 0;
         if(rawJsonInitialed) {
             return this.rawJson;
