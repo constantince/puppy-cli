@@ -1,5 +1,8 @@
 export type OrdersType = 'help' | 'create' | 'install' | 'list';
 
+export type NativeCommandFunctions = {
+    (params: string) : Promise<boolean>
+}
 
 export interface OrderItem {
     name: string,

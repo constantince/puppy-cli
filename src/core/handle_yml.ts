@@ -19,13 +19,6 @@ export default class Yml {
     rawJson: HandlBaseOrder;
 
     constructor () {
-        this.rawJson = {
-            source: {
-                native: {},
-                custom:{}
-            },
-            version: '1'
-        };
         
     }
 
