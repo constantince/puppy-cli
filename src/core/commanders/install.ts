@@ -1,5 +1,5 @@
 import { CheckoutPlugin } from "../check_modules";
-import { CreateCmdList, RegisterFn, InstallModuleType } from "../../types/types";
+import { CreateCmdList, RegisterFn, InstallModuleType, NativeCommandFunctions } from "../../types/types";
 import Spawn from "cross-spawn";
 import path from "path";
 import osenv from "osenv";
@@ -89,8 +89,9 @@ const checkModuleType = (mdName:string): Promise<boolean> => {
 
 }
 
-
-//返回一个promise 安装成功和失败
-module.exports = function(params: string):Promise<boolean> {
+const installKind: NativeCommandFunctions = function(params) {
     return checkModuleType.call(null, params);
 };
+
+//返回一个promise 安装成功和失败
+module.exports = installKind;
