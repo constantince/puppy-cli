@@ -68,6 +68,7 @@ export default class CommanderProxy {
                 const {abbreviation, params, description, path} = orderItem;
 
                 program
+                .version("0.0.1")
                 .command(key)
                 .option(
                     `${abbreviation}, ${params} [name]`, 

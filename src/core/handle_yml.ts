@@ -19,11 +19,10 @@ export default class Yml {
     rawJson: HandlBaseOrder;
 
     constructor () {
-        
     }
 
     public async getRawJson(): Promise<HandlBaseOrder> {
-        const rawJsonInitialed = Object.keys(this.rawJson.source.native).length > 0;
+        const rawJsonInitialed = typeof this.rawJson !== "undefined";
         if(rawJsonInitialed) {
             return this.rawJson;
         }
@@ -79,13 +78,8 @@ export default class Yml {
     }
 
     public checkCmdFromYml(cmd: string): boolean {
-
-        const native = this.rawJson.source.native;
-        const custom = this.rawJson.source.custom;
-        if(native[cmd as OrdersType]) {
-            return true;
-        }
-        if(custom[cmd]) {
+        const {native, custom} = this.rawJson.source;
+        if(native[cmd as OrdersType]  || custom[cmd]) {
             return true;
         }
         return false;
