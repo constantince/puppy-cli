@@ -13,6 +13,7 @@ const exists = promisify(fs.exists);
 
 const yml = new YML();
 
+//返回插件
 const install:InstallLike<string> = async (pluginName) => {
     const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', pluginName, 'lib/index.js');
     const exist = await exists(tarGenPath);
@@ -74,9 +75,13 @@ const checkModuleType = (mdName:string): Promise<boolean> => {
     puppy install puppy-tester-xxxx
      */
 
-    // if(/generator-puppy/.test(mdName)) {
+    if(/puppy-plugins/.test(mdName)) {
         return installPlugins(mdName);
-    // }
+    }
+
+    if(/generator-puppy/.test(mdName)) {
+        return installPlugins(mdName);
+    }
 
     // if(/puppy-test/.test(mdName)) {
     //     return InstallModuleType[1];
@@ -86,7 +91,7 @@ const checkModuleType = (mdName:string): Promise<boolean> => {
     //     return InstallModuleType[2];
     // }
 
-
+    return installPlugins(mdName);
 }
 
 const installKind: NativeCommandFunctions = function(params) {

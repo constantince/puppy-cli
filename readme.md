@@ -11,19 +11,14 @@ puppy-cli 为cli(commander line interact)工程化工具。指在为提高工作
 
 ##### 命令
 ```bash
+    # 创建本地插件模板
     puppy create -p puppy-plugins-test
-
-    puppy -i install xxx # 安装相关的插件
-
-    puppy -h help # 列出所有的本地命令列表
-
-    puppy -c template plugins mypluginname # 创建插件模版
-
-    puppy -c template generator mygeneratorname # 传教脚手架模板
-
-    puppy -c template test mytesttaskname
-
-
+    # 安装相关的插件
+    puppy install xxx
+    # 列出所有的本地命令列表详细信息
+    puppy list 
+    #查看所有的命令以及描述
+    puppy help
 ```
 
 
@@ -35,8 +30,9 @@ puppy-cli 本身只有极少的命令，通过插件和组件拼装的方式来�
   ``` bash
   #生成插件
   puppy create plugins
-  #
+
   ```
+
 - 开始开发你的插件
     ```ts
     type Cms = {
@@ -68,7 +64,7 @@ puppy-cli 本身只有极少的命令，通过插件和组件拼装的方式来�
     ```
 
 - 安装插件
-  
+  发布插件到npm上之后，你可以通过以下命令，将插件集成到cli中使用。
   ```bash
     puppy install -p puppy-plugins-xxxx
   ```

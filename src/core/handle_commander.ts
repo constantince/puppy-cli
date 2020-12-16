@@ -66,7 +66,6 @@ export default class CommanderProxy {
             if (allCommands.hasOwnProperty(key)) {
                 const orderItem = allCommands[key as OrdersType];
                 const {abbreviation, params, description, path} = orderItem;
-
                 program
                 .version("0.0.1")
                 .command(key)
@@ -95,7 +94,6 @@ export default class CommanderProxy {
                         const register : RegisterFn = (cmdNotUse, modules, descNotUse) => {
                             modules.call(this, arg);
                         }
-
                         (func as CustomFunc).call(this, register);
                     }
                 })

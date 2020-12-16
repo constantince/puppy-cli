@@ -11,15 +11,6 @@ const env = yeoman.createEnv();
 const exists = promisify(fs.exists);
 // const tarGenerator = path.join(__dirname, '../../node_modules', 'generator-puppy/generators/app', 'react.index.js');
 
-//env.register(require.resolve('./generators/app/index.js'), 'npm:index');
-//env.register(require.resolve('./generators/app/plugins.index.js'), 'npm:plugins');
-// env.register(require.resolve('./generators/app/seed.index.js'), 'npm:seed');
-// env.register(require.resolve(tarGenerator), 'npm:react');
-//判断模块以来是否存在
-const isExist = function (addr: string): boolean {
-    const fileExist = fs.existsSync(addr);
-    return fileExist;
-}
 
 
 //建立模板项目
