@@ -1,4 +1,4 @@
-import { CreateCmdList } from "../types/types";
+import { CreateItemsOptions } from "../types/types";
 import fs from "fs";
 import osenv from "osenv";
 import path from "path";

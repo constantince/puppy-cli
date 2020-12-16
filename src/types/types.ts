@@ -1,8 +1,17 @@
 export type OrdersType = 'help' | 'create' | 'install' | 'list';
+export type CreateItemsOptions  = 'plugins' | 'generator' | 'test';
+export const CreateItemsOptions = ['plugins', 'generator', 'test'];
 
-export type NativeCommandFunctions = {
-    (params: string) : Promise<boolean>
+export type CreatePromiseLike <T, U> = {
+    (params: T): Promise<U>
 }
+
+export type NativeCommandFunctions = CreatePromiseLike<string, boolean>;
+
+export type NativeFunc = NativeCommandFunctions;
+
+export type CustomFunc = CreatePromiseLike<RegisterFn, boolean>;
+
 
 export interface OrderItem {
     name: string,
@@ -11,14 +20,6 @@ export interface OrderItem {
     path: string,
     type: string,
     params: string
-}
-
-export type NativeFunc = {
-    (params: string): Promise<boolean>
-}
-
-export type CustomFunc = {
-    (f: RegisterFn): Promise<boolean>
 }
 
 export type OrderList = {
@@ -50,6 +51,7 @@ export type Options<T, K extends keyof T> = {
 type Cms = {
     [k in 'abbreviation' | 'params' | 'description']: string
 }
+
 type CmdDesctions = {
     name: string,
     path: string,
@@ -63,7 +65,5 @@ export type ModuleFunction = {
     (paramsStdin: string): void
 }
 
-export type InstallModuleType = 'plugins' | 'generator' | 'test';
-export const InstallModuleType = ['plugins', 'generator', 'test'];
 
-export type CreateCmdList  = 'plugins' | 'generator' | 'test';
+

@@ -1,24 +1,25 @@
-import { CheckoutPlugin } from "../check_modules";
-import { CreateCmdList, RegisterFn, InstallModuleType, NativeCommandFunctions } from "../../types/types";
+import { CreatePromiseLike, CreateItemsOptions, RegisterFn, NativeCommandFunctions, CustomFunc } from "../../types/types";
 import Spawn from "cross-spawn";
 import path from "path";
 import osenv from "osenv";
 import YML from "../handle_yml";
 import { promisify } from "util";
 import fs from "fs";
-type InstallLike<T = boolean> = {
-    (plugins: string): Promise<T>
-}
+import { triggerAsyncId } from "async_hooks";
+
+type InstallLike<T = boolean|string> = CreatePromiseLike<string, T>;
+type InstallResult = InstallLike<boolean>;
+
 const exists = promisify(fs.exists);
 
 const yml = new YML();
 
 //返回插件
-const install:InstallLike<string> = async (pluginName) => {
+const install:InstallLike = async (pluginName) => {
     const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', pluginName, 'lib/index.js');
     const exist = await exists(tarGenPath);
     if(exist) {
-        return "exit";
+        return false;
     }
     process.chdir(path.join(osenv.home(), '.puppy/'));
     Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
@@ -35,7 +36,7 @@ const install_generator = (modulePath: string) => {
 }
 
 // 插件安装之后 更新配置文件
-const after_install:InstallLike = (modulePath) => {
+const after_install:InstallLike<boolean> = (modulePath) => {
     const module = require(modulePath);
     //第一次执行的是命令写入 第二次执行再函数体，
     const register:RegisterFn = async (cmd, module, desc) => {
@@ -59,16 +60,13 @@ const after_install:InstallLike = (modulePath) => {
 
 }
 // install plugins
-const installPlugins:InstallLike = async (pluginsName) => {
+const installPlugins:InstallResult = async (pluginsName) => {
     const installResult = await install(pluginsName);
-    if(installResult === "exit") {
-        return false;
-    }
-    const registerResult = await after_install(installResult);
-    return registerResult;
+    if(typeof installResult === "boolean") return false;
+    return await after_install(installResult);
 }
 
-const checkModuleType = (mdName:string): Promise<boolean> => {
+const checkModuleType: InstallLike<boolean> = (mdName) => {
     /**
     puppy install puppy-plugins-xxxx
     puppy install generator-puppy-xxx
