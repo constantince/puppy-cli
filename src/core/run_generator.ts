@@ -4,14 +4,9 @@ import osenv from 'osenv';
 import fs from 'fs';
 import Spawn from 'cross-spawn';
 import { promisify } from 'util';
-import { CreateItemsOptions, NativeFunc } from '../types/types';
-import { CheckoutPlugin } from './check_modules';
-// const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 const env = yeoman.createEnv();
 const exists = promisify(fs.exists);
 // const tarGenerator = path.join(__dirname, '../../node_modules', 'generator-puppy/generators/app', 'react.index.js');
-
-
 
 //建立模板项目
 const _createPlugins = async function (): Promise<boolean> {

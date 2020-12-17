@@ -1,11 +1,10 @@
-import { CreatePromiseLike, CreateItemsOptions, RegisterFn, NativeCommandFunctions, CustomFunc } from "../../types/types";
+import { CreatePromiseLike, RegisterFn, NativeCommandFunctions } from "../../types/types";
 import Spawn from "cross-spawn";
 import path from "path";
 import osenv from "osenv";
 import YML from "../handle_yml";
 import { promisify } from "util";
 import fs from "fs";
-import { triggerAsyncId } from "async_hooks";
 
 type InstallLike<T = boolean|string> = CreatePromiseLike<string, T>;
 type InstallResult = InstallLike<boolean>;
@@ -14,17 +13,25 @@ const exists = promisify(fs.exists);
 
 const yml = new YML();
 
-//返回插件
-const install:InstallLike = async (pluginName) => {
-    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', pluginName, 'lib/index.js');
+const install_before:InstallLike = async plugin => {
+    //先检查本地是否存在插件
+    const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', plugin, 'lib/index.js');
     const exist = await exists(tarGenPath);
     if(exist) {
         return false;
     }
-    process.chdir(path.join(osenv.home(), '.puppy/'));
-    Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
-    //返回
+    //检查是否存在线上版本
     return tarGenPath;
+}
+
+//返回插件地址
+const install:InstallLike = async (pluginName) => {
+    const shouldInstall = install_before(pluginName);
+    if(typeof shouldInstall === "string") {
+        process.chdir(path.join(osenv.home(), '.puppy/'));
+        Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
+    }
+    return shouldInstall;
 }
 
 const install_tester = (modules: string) => {
@@ -59,6 +66,7 @@ const after_install:InstallLike<boolean> = (modulePath) => {
     
 
 }
+
 // install plugins
 const installPlugins:InstallResult = async (pluginsName) => {
     const installResult = await install(pluginsName);

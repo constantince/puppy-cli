@@ -1,4 +1,5 @@
 export type OrdersType = 'help' | 'create' | 'install' | 'list';
+export const OrdersType = ['help', 'create', 'install', 'list'];
 export type CreateItemsOptions  = 'plugins' | 'generator' | 'test';
 export const CreateItemsOptions = ['plugins', 'generator', 'test'];
 

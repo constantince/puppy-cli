@@ -3,7 +3,6 @@ import path from "path";
 import osenv from 'osenv';
 import yaml from 'js-yaml';
 import Chalk from 'chalk';
-
 import commander, { Command } from "commander";
 import {
     BaseOrder,
@@ -36,7 +35,6 @@ export default class CommanderProxy {
     }
     // yaml file transter to json object
     private transformYaml(): BaseOrder {
-
         if (fs.existsSync(home)) {
             const ymlConfigurations = fs.readFileSync(home, { encoding: 'utf-8' });
             return yaml.safeLoad(ymlConfigurations) as BaseOrder;
@@ -102,7 +100,7 @@ export default class CommanderProxy {
 
     // get the cmd stdin console panel
     private getCmdType(cmd: string): 'native' | 'custom' {
-        if(['help', 'create', 'install', 'list'].indexOf(cmd) >= 0) {
+        if(OrdersType.indexOf(cmd) >= 0) {
             return "native";
         }
         return 'custom';

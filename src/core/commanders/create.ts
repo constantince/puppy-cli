@@ -1,9 +1,6 @@
 import runGen from '../run_generator';
 import { NativeFunc } from '../../types/types';
 
-type NameList = 'plugins' | 'generator' | 'test';
-
-
 const Create_Native: NativeFunc = (projectName) => {
     // console.log('your cmd is now runing:', cmd, PREFIX + projectName);
     //检查命令模块是否存在先
