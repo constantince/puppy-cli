@@ -26,7 +26,7 @@ const install_before:InstallLike = async plugin => {
 
 //返回插件地址
 const install:InstallLike = async (pluginName) => {
-    const shouldInstall = install_before(pluginName);
+    const shouldInstall = await install_before(pluginName);
     if(typeof shouldInstall === "string") {
         process.chdir(path.join(osenv.home(), '.puppy/'));
         Spawn.sync('npm', ['install', `${pluginName}`, '-D'], { stdio: 'inherit' });
