@@ -12,10 +12,10 @@
                 "<node_internals>/**"
             ],
             "runtimeExecutable": "puppy",
-            "runtimeArgs": ["list", "-a", "all"],
+            // "runtimeArgs": ["list", "-a", "all"],
             // "runtimeArgs": ["happy", "-h", "birthday"],
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
-            // "runtimeArgs": ["create", "-p", "plugins"],
+            "runtimeArgs": ["create", "-p", "react"],
             // "runtimeArgs": ["puppy", "-h"],
             // "preLaunchTask": "echo",
             // "program": "${workspaceFolder}/src/index.ts",

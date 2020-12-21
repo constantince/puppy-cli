@@ -9,9 +9,9 @@ const exists = promisify(fs.exists);
 // const tarGenerator = path.join(__dirname, '../../node_modules', 'generator-puppy/generators/app', 'react.index.js');
 
 //建立模板项目
-const _createPlugins = async function (): Promise<boolean> {
+const _createTemplate = async function (type: string): Promise<boolean> {
     // 官方自带创建脚手架
-    const generator = 'generator-puppy-plugins';
+    const generator = `generator-puppy-${type}`;
     const tarGenPath = path.join(osenv.home(), '.puppy/node_modules', generator, 'generators/app/index.js');
     // 查找是官方模板是否存在
     const exit = await exists(tarGenPath);
@@ -38,13 +38,12 @@ const _createPlugins = async function (): Promise<boolean> {
 }
 
 const excute = function (pluginName: string): Promise<boolean> {
-    if (pluginName === 'plugins') {
-        return _createPlugins();
-    }
-    return new Promise((resolve, reject) => {
-        console.log("cmd not created, please waitting....");
-        resolve(false);
-    })
+    return _createTemplate(pluginName);
+    
+    // return new Promise((resolve, reject) => {
+    //     console.log("cmd not created, please waitting....");
+    //     resolve(false);
+    // })
 };
 
 
