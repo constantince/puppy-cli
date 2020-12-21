@@ -48,11 +48,10 @@ const after_install:InstallLike<boolean> = (modulePath) => {
     //第一次执行的是命令写入 第二次执行再函数体，
     const register:RegisterFn = async (cmd, module, desc) => {
         const defaults = {
-            abbreviation: '',
             description: desc,
             path: modulePath,
             type: 'custom',
-            params: 'params'
+            params: [{}]
         }
         await yml.appendToYml({
            ...defaults,

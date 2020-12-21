@@ -1,11 +1,45 @@
 {
     "source" : {
-        "help": {
-            "commands": [ { "name": "help" } ],
-            "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/help.js",
-            "type": "native",
-            "abbreviation": "-h",
-            "description": "get some help from native"
+        "native": {
+            "help": {
+                "commands": "help",
+                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/help.js",
+                "type": "native",
+                "params": [],
+                "description": "get some help from native"
+            },
+            "create": {
+                "commands": "create",
+                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/create.js",
+                "type": "native",
+                "params": [{
+                    "name": "--project",
+                    "abbr": "-p",
+                    "desc": "project name"
+                }],
+                "description": "create a project or plugins"
+            },
+            "install": {
+                "commands": "install",
+                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/install.js",
+                "type": "native",
+                "params": [{
+                    "name": "--package",
+                    "abbr": "-p",
+                    "desc": "npm package name"
+                }],
+                "description": "get some help from native"
+            },
+            "list": {
+                "commands": "list",
+                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/list.js",
+                "type": "native",
+                "params": [],
+                "description": "list out all commanders"
+            }
+        },
+        "custom": {
+
         }
     },
     "version": "1.0.0"

@@ -67,8 +67,6 @@
   },
   "include": [
     "*.ts",
-    "src/*.json", 
-    "config",
     "src/**/*"
   ],
   "exclude": [

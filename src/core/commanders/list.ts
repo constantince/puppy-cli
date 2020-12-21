@@ -16,18 +16,18 @@ const list: NativeCommandFunctions = async params => {
      */
     let t_native = [];
     for(let i in json.source.native) {
-        let {name, abbreviation, description, type, params} = json.source.native[i as OrdersType];
+        let {name, description, type, params} = json.source.native[i as OrdersType];
         let obj = {
-            name, abbreviation, description, type, params,
+            name, description, type, params,
             source: 'local'
         }
         t_native.push(obj);
     }
     let t_custom = [];
     for(let i in json.source.custom) {
-        let {name, abbreviation, description, type, params} = json.source.custom[i];
+        let {name, description, type, params} = json.source.custom[i];
         let obj = {
-            name, abbreviation, description, type, params,
+            name, description, type, params,
             source: 'local'
         }
         t_custom.push(obj);

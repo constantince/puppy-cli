@@ -4,7 +4,7 @@ export type CreateItemsOptions  = 'plugins' | 'generator' | 'test';
 export const CreateItemsOptions = ['plugins', 'generator', 'test'];
 
 export type CreatePromiseLike <T, U> = {
-    (params: T): Promise<U>
+    (...params: T[]): Promise<U>
 }
 
 export type NativeCommandFunctions = CreatePromiseLike<string, boolean>;
@@ -13,14 +13,18 @@ export type NativeFunc = NativeCommandFunctions;
 
 export type CustomFunc = CreatePromiseLike<RegisterFn, boolean>;
 
+export type ComParams = Partial<{
+    name: string,
+    abbr: string,
+    desc: string
+}>
 
 export interface OrderItem {
     name: string,
-    abbreviation: string,
     description: string,
     path: string,
     type: string,
-    params: string
+    params: ComParams[]
 }
 
 export type OrderList = {
@@ -50,12 +54,13 @@ export type Options<T, K extends keyof T> = {
 }
 
 type Cms = {
-    [k in 'abbreviation' | 'params' | 'description']: string
+    [k in | 'params' | 'description']: string
 }
 
 type CmdDesctions = {
     name: string,
     path: string,
+    params: []
 } & Partial<Cms>;
 
 export type RegisterFn = {
@@ -63,7 +68,7 @@ export type RegisterFn = {
 }
 
 export type ModuleFunction = {
-    (paramsStdin: string): void
+    (...args: Array<string>): void
 }
 
 
