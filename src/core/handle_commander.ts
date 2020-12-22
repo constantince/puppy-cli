@@ -39,6 +39,7 @@ export default class CommanderProxy {
             this.conf = res;
             //初始化命令
             this.initialCommanders();
+            this.excuteCommander();
         });
         
 
@@ -65,10 +66,18 @@ export default class CommanderProxy {
     private writeJsonToYml(): BaseOrder {
         const localConfigurations = fs.readFileSync(path.join(__dirname, '../../config/commanders.config.json'), {encoding: 'utf-8'}); 
         const cmds = JSON.parse(localConfigurations) as BaseOrder;
+        console.log("cmds", cmds);
+        this.addPathToYml(cmds.source.native);
         const ymlJSON = yaml.dump(cmds);
         //window mac linux consideration!--
         fs.writeFileSync(home, ymlJSON);
         return cmds;
+    }
+
+    private addPathToYml(nativeCmds: BaseOrder['source']['native']) {
+        for(let i in nativeCmds) {
+            nativeCmds[i as OrdersType].path = path.join(__dirname, nativeCmds[i as OrdersType].path)
+        }
     }
 
     // inital all native commander

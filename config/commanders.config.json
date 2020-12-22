@@ -3,14 +3,14 @@
         "native": {
             "help": {
                 "commands": "help",
-                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/help.js",
+                "path": "../core/commanders/help.js",
                 "type": "native",
                 "params": [],
                 "description": "get some help from native"
             },
             "create": {
                 "commands": "create",
-                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/create.js",
+                "path": "../core/commanders/create.js",
                 "type": "native",
                 "params": [{
                     "name": "--project",
@@ -21,7 +21,7 @@
             },
             "install": {
                 "commands": "install",
-                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/install.js",
+                "path": "../core/commanders/install.js",
                 "type": "native",
                 "params": [{
                     "name": "--package",
@@ -32,7 +32,7 @@
             },
             "list": {
                 "commands": "list",
-                "path": "/Users/chenyan/Office/Lab/Commander/lib/core/commanders/list.js",
+                "path": "../core/commanders/list.js",
                 "type": "native",
                 "params": [],
                 "description": "list out all commanders"

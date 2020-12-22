@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "runtimeExecutable": "puppy",
+            "runtimeExecutable": "node lib/index.js",
             // "runtimeArgs": ["list", "-a", "all"],
             // "runtimeArgs": ["happy", "-h", "birthday"],
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
