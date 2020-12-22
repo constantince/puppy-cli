@@ -17,7 +17,7 @@
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
             // "runtimeArgs": ["create", "-p", "react"],
             // "runtimeArgs": ["help", "-p", "123", "-u", "356"],
-            "runtimeArgs": ["help", "222", "123"],
+            "runtimeArgs": ["help", "1", "2"],
             // "preLaunchTask": "echo",
             // "program": "${workspaceFolder}/src/index.ts",
             "outFiles": [

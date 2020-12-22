@@ -39,7 +39,8 @@ export default class CommanderProxy {
             this.conf = res;
             //初始化命令
             this.initialCommanders();
-            this.excuteCommander();
+
+            this.excuteCommander()
         });
         
 
