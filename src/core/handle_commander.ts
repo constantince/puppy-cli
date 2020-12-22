@@ -14,6 +14,12 @@ import {
     ComParams
 } from '../types/types';
 
+import { promisify } from 'util';
+
+const mkdir = promisify(fs.mkdir);
+const isExist = promisify(fs.exists);
+const read = promisify(fs.readFile);
+
 const program = new Command();
 const home = path.join(osenv.home(), '.puppy/.puppy.yml');
 
@@ -29,15 +35,25 @@ export default class CommanderProxy {
 
     constructor() {
         //命令转换器
-        this.storeCmd = this.conf = this.transformYaml();
-        //初始化命令
-        this.initialCommanders();
+        this.transformYaml().then(res => {
+            this.conf = res;
+            //初始化命令
+            this.initialCommanders();
+        });
+        
 
     }
     // yaml file transter to json object
-    private transformYaml(): BaseOrder {
-        if (fs.existsSync(home)) {
-            const ymlConfigurations = fs.readFileSync(home, { encoding: 'utf-8' });
+    private async transformYaml(): Promise<BaseOrder> {
+        const root = path.join(osenv.home(), '.puppy');
+        const yml = path.join(root, '.puppy.yml')
+        const rootStat = await isExist(root);
+        if(rootStat === false) {
+            await mkdir(root)
+        }
+        const ymlStat = await isExist(yml);
+        if (ymlStat) {
+            const ymlConfigurations = await read(yml, { encoding: 'utf-8' });
             return yaml.safeLoad(ymlConfigurations) as BaseOrder;
         } else {
             return this.writeJsonToYml();
@@ -48,11 +64,11 @@ export default class CommanderProxy {
     // parse configration in local
     private writeJsonToYml(): BaseOrder {
         const localConfigurations = fs.readFileSync(path.join(__dirname, '../../config/commanders.config.json'), {encoding: 'utf-8'}); 
-        this.storeCmd = JSON.parse(localConfigurations) as BaseOrder;
-        const ymlJSON = yaml.dump(this.storeCmd);
+        const cmds = JSON.parse(localConfigurations) as BaseOrder;
+        const ymlJSON = yaml.dump(cmds);
         //window mac linux consideration!--
         fs.writeFileSync(home, ymlJSON);
-        return this.storeCmd;
+        return cmds;
     }
 
     // inital all native commander
@@ -65,9 +81,7 @@ export default class CommanderProxy {
             if (allCommands.hasOwnProperty(key)) {
                 const orderItem = allCommands[key as OrdersType];
                 const {params, description, path} = orderItem;
-                const cur:commander.Command = program
-                            .version("0.0.1")
-                            .command(key);
+                const cur:commander.Command = program.version("0.0.1").command(key);
                 this.addParams(params, orderItem.description, cur);
                 cur.action(cmd => {
                     const args = this.handleVariousParams(params, cmd);
@@ -97,6 +111,7 @@ export default class CommanderProxy {
                 
             }}
     }
+
 
     private addParams(params: ComParams[], desc:string, cur: commander.Command): void {
         params.forEach((element: ComParams) => {
