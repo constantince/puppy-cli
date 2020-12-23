@@ -73,6 +73,12 @@ const installPlugins:InstallResult = async (pluginsName) => {
     return await after_install(installResult);
 }
 
+// install generators
+const installGenerator:InstallResult = async (generator) => {
+    const result = await install(generator);
+    return !!result;
+}
+
 const checkModuleType: InstallLike<boolean> = (mdName) => {
     /**
     puppy install puppy-plugins-xxxx
@@ -85,7 +91,7 @@ const checkModuleType: InstallLike<boolean> = (mdName) => {
     }
 
     if(/generator-puppy/.test(mdName)) {
-        return installPlugins(mdName);
+        return installGenerator(mdName);
     }
 
     // if(/puppy-test/.test(mdName)) {

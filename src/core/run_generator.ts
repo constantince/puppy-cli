@@ -18,23 +18,23 @@ const _createTemplate = async function (type: string): Promise<boolean> {
     if (!exit) { //未下载，下载官方模板
         console.log('Generators will be downloaded only once, waiting...');
         process.chdir(path.join(osenv.home(), '.puppy/'));
-        const installResult = await Spawn.sync('npm', ['install', generator, '-D'], { stdio: 'inherit' });
-        return Boolean(installResult);
-    } else { //已下载，开始运行模板文件
-        return new Promise((resolve, reject) => {
-            env.register(tarGenPath, `create`);
-            env.run(`create`, { 'skip-install': true }, function (err) {
-                if (err) {
-                    console.log('opps! occured something wrong!!');
-                    resolve(false);
-                } else {
-                    resolve(true);
-                }
-
-            });
-        })
-
+        await Spawn.sync('npm', ['install', generator, '-D'], { stdio: 'inherit' });
     }
+    //已下载，开始运行模板文件
+    return new Promise((resolve, reject) => {
+        env.register(tarGenPath, `create`);
+        env.run(`create`, { 'skip-install': true }, function (err) {
+            if (err) {
+                console.log('opps! occured something wrong!!');
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+
+        });
+    })
+
+    
 }
 
 const excute = function (pluginName: string): Promise<boolean> {

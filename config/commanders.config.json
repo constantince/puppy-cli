@@ -28,7 +28,7 @@
                     "abbr": "-p",
                     "desc": "npm package name"
                 }],
-                "description": "get some help from native"
+                "description": "install plugins, generator"
             },
             "list": {
                 "commands": "list",
