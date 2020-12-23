@@ -16,7 +16,7 @@ const _createTemplate = async function (type: string): Promise<boolean> {
     // 查找是官方模板是否存在
     const exit = await exists(tarGenPath);
     if (!exit) { //未下载，下载官方模板
-        console.log('generators downloading...');
+        console.log('Generators will be downloaded only once, waiting...');
         process.chdir(path.join(osenv.home(), '.puppy/'));
         const installResult = await Spawn.sync('npm', ['install', generator, '-D'], { stdio: 'inherit' });
         return Boolean(installResult);

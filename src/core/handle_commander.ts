@@ -39,8 +39,8 @@ export default class CommanderProxy {
             this.conf = res;
             //初始化命令
             this.initialCommanders();
-
-            this.excuteCommander()
+            //start commander
+            this.excuteCommander();
         });
         
 
@@ -75,9 +75,11 @@ export default class CommanderProxy {
         return cmds;
     }
 
+    //set native path to yml file
     private addPathToYml(nativeCmds: BaseOrder['source']['native']) {
         for(let i in nativeCmds) {
-            nativeCmds[i as OrdersType].path = path.join(__dirname, nativeCmds[i as OrdersType].path)
+            const sig = nativeCmds[i as OrdersType];
+            sig.path = path.join(__dirname, sig.path);
         }
     }
 
@@ -117,18 +119,20 @@ export default class CommanderProxy {
                         }
                         (func as CustomFunc).call(this, register);
                     }
-                });
-                
+                }); 
             }}
     }
 
 
     private addParams(params: ComParams[], desc:string, cur: commander.Command): void {
         params.forEach((element: ComParams) => {
-            cur.option(
-                `${element.abbr}, ${element.name} [name]`, 
-                desc
-            )
+            if(element.name) {
+                cur.option(
+                    `${element.abbr}, ${element.name} [name]`, 
+                    desc
+                )
+            }
+                
         });
     }
 

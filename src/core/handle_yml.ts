@@ -19,6 +19,7 @@ export default class Yml {
     rawJson: HandlBaseOrder;
 
     constructor () {
+        
     }
 
     public async getRawJson(): Promise<HandlBaseOrder> {
