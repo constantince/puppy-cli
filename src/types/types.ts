@@ -20,7 +20,6 @@ export type ComParams = Partial<{
 }>
 
 export interface OrderItem {
-    name: string,
     description: string,
     path: string,
     type: string,
@@ -57,11 +56,13 @@ type Cms = {
     [k in | 'params' | 'description']: string
 }
 
-type CmdDesctions = {
+export type CmdDesctions = {
     name: string,
     path: string,
-    params: []
-} & Partial<Cms>;
+    params: [],
+    type: string,
+    description: string
+}
 
 export type RegisterFn = {
     (customCmd: CmdDesctions, moduleFunction: ModuleFunction, desc: string) : any

@@ -2,14 +2,12 @@
     "source" : {
         "native": {
             "help": {
-                "commands": "help",
                 "path": "../core/commanders/help.js",
                 "type": "native",
                 "params": [],
                 "description": "get some help from native"
             },
             "create": {
-                "commands": "create",
                 "path": "../core/commanders/create.js",
                 "type": "native",
                 "params": [{
@@ -20,7 +18,6 @@
                 "description": "create a project or plugins"
             },
             "install": {
-                "commands": "install",
                 "path": "../core/commanders/install.js",
                 "type": "native",
                 "params": [{
@@ -31,7 +28,6 @@
                 "description": "install plugins, generator"
             },
             "list": {
-                "commands": "list",
                 "path": "../core/commanders/list.js",
                 "type": "native",
                 "params": [],

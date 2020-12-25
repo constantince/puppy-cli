@@ -3,7 +3,7 @@ import fs from "fs";
 import osenv from "osenv";
 import path from "path";
 import yaml from 'js-yaml';
-import { OrdersType, OrderItem, BaseOrder, OrderList } from "../types/types";
+import { OrdersType, CmdDesctions, BaseOrder, OrderList } from "../types/types";
 
 const stat = promisify(fs.stat);
 const write = promisify(fs.writeFile);
@@ -57,7 +57,6 @@ export default class Yml {
             const name = dir[i].replace(/\.[tj]s$/, '') as OrdersType;
             this.rawJson.source.native[name] = 
             {
-                name: name,
                 path: path.resolve(name),
                 type: 'native',
                 description: '',
@@ -67,7 +66,7 @@ export default class Yml {
         return this.parseJsonToYml();
     }
 
-    public async appendToYml(cmd: OrderItem): Promise<boolean> {
+    public async appendToYml(cmd: CmdDesctions): Promise<boolean> {
         if(this.checkCmdFromYml(cmd.name)) {
             return true;
         }

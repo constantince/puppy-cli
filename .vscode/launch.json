@@ -11,13 +11,13 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "runtimeExecutable": "node lib/index.js",
-            // "runtimeArgs": ["list", "-a", "all"],
+            "runtimeExecutable": "puppy",
+            "runtimeArgs": ["list"],
             // "runtimeArgs": ["happy", "-h", "birthday"],
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
             // "runtimeArgs": ["create", "-p", "react"],
             // "runtimeArgs": ["help", "-p", "123", "-u", "356"],
-            "runtimeArgs": ["help", "1", "2"],
+            // "runtimeArgs": ["help", "1", "2"],
             // "preLaunchTask": "echo",
             // "program": "${workspaceFolder}/src/index.ts",
             "outFiles": [
