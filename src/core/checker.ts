@@ -2,7 +2,6 @@ import { CreateItemsOptions } from "../types/types";
 import fs from "fs";
 import osenv from "osenv";
 import path from "path";
-import spaw from "cross-spawn";
 import spawn from "cross-spawn";
 
 type PackageManageTool  = "npm" | "cnpm" | "yarn" | "tnpm" | "pnpm";
