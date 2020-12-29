@@ -18,7 +18,7 @@ const _createTemplate = async function (type: string): Promise<boolean> {
     if (!exit) { //未下载，下载官方模板
         console.log('Generators will be downloaded only once, waiting...');
         process.chdir(path.join(osenv.home(), '.puppy/'));
-        await Spawn.sync('npm', ['install', generator, '-D'], { stdio: 'inherit' });
+        await Spawn.sync('npm', ['install', '--registry http://10.10.204.38:4873', generator, '-D'], { stdio: 'inherit' });
     }
     //已下载，开始运行模板文件
     return new Promise((resolve, reject) => {

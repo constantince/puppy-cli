@@ -1,6 +1,6 @@
 {
   "name": "puppy-cli",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,26 +16,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cross-spawn": "^7.0.3",
-    "chalk": "^4.1.0",
-    "commander": "^6.1.0"
-  },
-  "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^14.14.6",
     "@types/osenv": "^0.1.0",
-    "@types/yeoman-environment": "^2.10.2",
-    "@typescript-eslint/eslint-plugin": "^4.6.0",
-    "@typescript-eslint/parser": "^4.6.0",
-    "eslint": "^7.12.1",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-typescript": "^0.14.0",
+    "cross-spawn": "^7.0.3",
+    "chalk": "^4.1.0",
+    "commander": "^6.1.0",
     "husky": "^4.3.0",
     "js-yaml": "^3.14.0",
     "lint-staged": "^10.5.1",
@@ -44,6 +33,18 @@
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5",
     "yeoman-environment": "^2.10.3",
+    "@types/yeoman-environment": "^2.10.2",
     "yo": "^3.1.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-typescript": "^0.14.0"
+    
   }
 }

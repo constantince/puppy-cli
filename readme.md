@@ -5,43 +5,45 @@
 
 ##### 安装
 ```bash
-    #通过全局包安装的方式来安装puppy模块
-    npm install puppy-cli -g
+#通过全局包安装的方式来安装puppy模块
+npm install puppy-cli -g
 ```
 
 
 ##### 命令
 
-  - create
+- #### create
+  
 <code>create</code>命令用来创建各种初始化模板，如果一个新的react项目，或者npm package，又或者我们经常用到的第三方非标。create命令通过yoman脚手架的api提供控制台选项可视化操作，快速完成项目的创建。你可以在顺易通私有仓库看到以generator-puppy-开头的模块，后面的名字就是create参数的命令字符。例如你可以通过下面的方式来创建一个新的非标项目。
+
 ```bash
-    # 创建本地插件模板
-    puppy create -p third-pay
+# 创建本地插件模板
+puppy create -p third-pay
 ```
 <code>puppy-cli</code>会去私有仓库中查找是否存在<code>generator-puppy-third-pay</code>的package，并且下载到你本地运行。第一次下载可能需要点时间，后续操作会非常快速便捷。你可以在每个package的文档中查看各个配置的说明，原则上说明文档会被作者与插件一起上传到私有的库上。
 
-  - install
+  - #### install
 <code>install</code>命令是用来安装私有库的package的，仓库中很多同事开发了新的插件，这些插件或许会对你的开发也有用，那么你可以通过下面的方式，把插件集成安装到puppy-cli中去。首先你去仓库中查找相关的插件，这些模块必须以<font color=red>puppy-plugins-</font>开头，然后安装它们：
 
 ```bash
-   #安装本地插件
-   puppy install -p puppy-plugins-test
+#安装本地插件
+puppy install -p puppy-plugins-test
 ```
 <code>puppy-cli</code>会把命令自动注册到本地命令列表中，你只需使用<font color=red>puppy list</font>来查看新加入的插件命令。create 命令会帮助你生成插件的模板，你只需要编写配置项和业务代码，即可快速实现插件开发。请注意编写好详细的插件文档，方便开发人员查阅使用。
 
-  - help
-<code>help</code>命令帮助你生成一些本地的命令信息以及描述。只需执行以下命令即可：
+  - #### help
+  <code>help</code>命令帮助你生成一些本地的命令信息以及描述。只需执行以下命令即可：
 
-```bash
+  ```bash
   puppy help
-```
+  ```
 
-  - list
-<code>list</code>列举命令名称和参数列表，你可以经常查看，以便开发过程中查阅。
+  - #### list
+  <code>list</code>列举命令名称和参数列表，你可以经常查看，以便开发过程中查阅。
 
-```bash
+  ```bash
   puppy list
-```
+  ```
 
 ##### 插件体系
 
@@ -54,45 +56,49 @@
   ```
 
   - 开始开发你的插件
-    ```ts
-    type Cms = { [k in 'name' | 'abbr' | 'desc']: string };
+  ```ts
+  type Cms = { [k in 'name' | 'abbr' | 'desc']: string };
 
-    type CmdDesctions = {
-      name: string,
-      type: string,
-      description: string,
-      params: Cms[]
-    }
+  type CmdDesctions = {
+    name: string,
+    type: string,
+    description: string,
+    params: Cms[]
+  }
 
-    // write your cmd configrations here:
-    const CmdDesctions: CmdDesctions = {
-      name: 'hello', // command name
-      type: 'custoom', // plugins type default custom
-      description: 'xxxxxx', // command description
-      params: [{ // commander paramters
-          "name": "--project", //commander name
-          "abbr": "-p", // commander abbreviation
-          "desc": "project name" // desction for cmd
-      }], // params name
-    };  
+  // write your cmd configrations here:
+  const CmdDesctions: CmdDesctions = {
+    name: 'hello', // command name
+    type: 'custoom', // plugins type default custom
+    description: 'xxxxxx', // command description
+    params: [{ // commander paramters
+        "name": "--project", //commander name
+        "abbr": "-p", // commander abbreviation
+        "desc": "project name" // desction for cmd
+    }], // params name
+  };  
 
 
-    const happy = (register: any): void => {
-      console.log('happy plugins loaded...');
-      register(CmdDesctions, (log: Cms) => {
-          // write or import modules or logic here
-          console.log(log);
-      }, 'write your plugins descriptions or specification here');
-    };
+  const happy = (register: any): void => {
+    console.log('happy plugins loaded...');
+    register(CmdDesctions, (log: Cms) => {
+        // write or import modules or logic here
+        console.log(log);
+    }, 'write your plugins descriptions or specification here');
+  };
 
-    module.exports = happy;
-    ```
+  module.exports = happy;
+  ```
+
   - 发布你的插件
-    ```bash
-      npm publish
-    ```
-  -  使用插件
+
   ```bash
-    puppy your-cmds -p xxxx
+  npm publish
+  ```
+
+  - 使用插件
+  
+  ```bash
+  puppy your-cmds -p xxxx
   ```
 <font>
