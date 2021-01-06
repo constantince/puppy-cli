@@ -37,7 +37,7 @@ export default class Yml {
         return this.rawJson;        
     }
 
-    //
+    //.
     private checkIfYmlExist(): Promise<fs.Stats> {
         return stat(this.path);
     }

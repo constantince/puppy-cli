@@ -82,7 +82,7 @@ puppy install -p puppy-plugins-test
   const happy = (register: any): void => {
     console.log('happy plugins loaded...');
     register(CmdDesctions, (log: Cms) => {
-        // write or import modules or logic here
+        // write or import modules or logic here.
         console.log(log);
     }, 'write your plugins descriptions or specification here');
   };

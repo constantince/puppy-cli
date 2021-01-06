@@ -1,0 +1,9 @@
+class Update {
+    constructor() {
+
+    }
+
+    getVersion() {
+        
+    }
+}
