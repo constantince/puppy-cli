@@ -37,28 +37,7 @@ const _createTemplate = async function (type: string): Promise<boolean> {
     
 }
 
-//to build syt-components
-const _createComp = async function (type: string): Promise<boolean> {
-       // 第三方脚手架
-       const generator = 'create-react-library';
-       const tarGenPath = path.join(osenv.home(), '.puppy/node_modules/.bin', generator);
-       // 查找是否存在
-       const exit = await exists(tarGenPath);
-       if (!exit) { //未下载，下载官方模板
-           console.log('creator will be downloaded only once, waiting...');
-           process.chdir(path.join(osenv.home(), '.puppy/'));
-           await Spawn.sync('npm', ['install', generator, '-D'], { stdio: 'inherit' });
-       }
-       const result = await Spawn.sync('node',[tarGenPath], { stdio: 'inherit' });
-
-       return Boolean(result);
-    
-}
-
 const excute = function (pluginName: string): Promise<boolean> {
-    if (pluginName === 'components') {
-       return _createComp(pluginName);
-    }
     return _createTemplate(pluginName);
 };
 
