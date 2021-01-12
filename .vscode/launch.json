@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "runtimeExecutable": "puppy",
-            "runtimeArgs": ["list"],
+            // "runtimeArgs": ["list"],
             "runtimeArgs": ["create", "-p", "components"],
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
             // "runtimeArgs": ["create", "-p", "react"],
