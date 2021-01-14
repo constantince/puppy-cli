@@ -13,7 +13,7 @@
             ],
             "runtimeExecutable": "puppy",
             // "runtimeArgs": ["list"],
-            "runtimeArgs": ["create", "-p", "components"],
+            "runtimeArgs": ["update", "-g", "generators"],
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
             // "runtimeArgs": ["create", "-p", "react"],
             // "runtimeArgs": ["help", "-p", "123", "-u", "356"],

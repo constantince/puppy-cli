@@ -34,6 +34,7 @@ export default class CommanderProxy {
     storeCmd: BaseOrder;
 
     constructor() {
+        console.log("come out")
         //命令转换器
         this.transformYaml().then(res => {
             this.conf = res;
@@ -89,6 +90,7 @@ export default class CommanderProxy {
             ...this.conf.source.native,
             ...this.conf.source.custom
         };
+        console.log("come in")
         for (let key in allCommands) {
             if (allCommands.hasOwnProperty(key)) {
                 const orderItem = allCommands[key as OrdersType];
@@ -106,6 +108,7 @@ export default class CommanderProxy {
                     //single params to do let it mutiple
                     // const arg = cmd[params[0].name.replace('--', '')];
                     const func = require(path);
+                    console.log("_cmd.name", cmd._name)
                     if(this.getCmdType(cmd._name) === "native") {// 本地命令
                         (func as NativeFunc).apply(this, args).then((res: boolean) => {
                             console.log(
