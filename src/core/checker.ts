@@ -1,11 +1,10 @@
-import { CreateItemsOptions } from "../types/types";
+import { CreateItemsOptions, PackageManageTool } from "../types/types";
 import fs from "fs";
 import osenv from "osenv";
 import path from "path";
-import spawn from "cross-spawn";
+import { excution } from '../tools/index';
 
-type PackageManageTool  = "npm" | "cnpm" | "yarn" | "tnpm" | "pnpm";
-const PackageManageTools = ["cnpm", "npm", "pnpm", "tnpm", "yarn"];
+let PACKAGEMANAGER: null | PackageManageTool = null;
 
 const checkoutPlugin = (name: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
@@ -18,12 +17,19 @@ const checkoutPlugin = (name: string): Promise<boolean> => {
     });
 };
 
-const checkoutPackageManageTools = async () : Promise<PackageManageTool | undefined> => {
-    const tools = PackageManageTools.filter(async _t => {
-        const result = await spawn.sync(_t, ["-v"], {stdio: "ignore"});
-        return result.status === 0;
-    });
-    return (tools as PackageManageTool[])[0];
+const checkoutPackageManageTools = async () : Promise<PackageManageTool | boolean> => {
+    if(PACKAGEMANAGER === null) {
+        for ( let v in PackageManageTool) {
+            const re = await excution([{
+                cmd: PackageManageTool[v],
+                args: ['-v']
+            }]).catch(rex => false);
+            if(typeof re === "boolean") continue;
+            return re[0].cmd as PackageManageTool;
+        }
+        return false
+    } 
+    return PACKAGEMANAGER;
 }
 
 

@@ -12,7 +12,6 @@ const update = async (generator: string) => {
                 cwd: path.join(osenv.home(), '.puppy/')
             }
         ]
-
         const rootP = excution(Dependencies);
         ora.promise(rootP, `Upgrading...`);
         await rootP;

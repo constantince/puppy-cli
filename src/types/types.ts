@@ -2,7 +2,8 @@ export type OrdersType = 'help' | 'create' | 'install' | 'list' | 'update';
 export const OrdersType = ['help', 'create', 'install', 'list', 'update'];
 export type CreateItemsOptions  = 'plugins' | 'generator' | 'test';
 export const CreateItemsOptions = ['plugins', 'generator', 'test'];
-
+export type PackageManageTool  = "cnpm" | "npm" | "yarn" | "tnpm" | "pnpm";
+export const PackageManageTool = ["cnpm", "npm", "pnpm", "tnpm", "yarn"];
 export type CreatePromiseLike <T, U> = {
     (...params: T[]): Promise<U>
 }

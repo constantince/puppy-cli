@@ -11,10 +11,12 @@ import {
     RegisterFn,
     NativeFunc,
     CustomFunc,
-    ComParams
+    ComParams,
+    PackageManageTool
 } from '../types/types';
 
 import { promisify } from 'util';
+import { checkoutPackageManageTools } from './checker';
 
 const mkdir = promisify(fs.mkdir);
 const isExist = promisify(fs.exists);
@@ -22,7 +24,6 @@ const read = promisify(fs.readFile);
 
 const program = new Command();
 const home = path.join(osenv.home(), '.puppy/.puppy.yml');
-
 export default class CommanderProxy {
 
     baseCommander: OrderList | null = null;
@@ -33,18 +34,25 @@ export default class CommanderProxy {
 
     storeCmd: BaseOrder;
 
+    pm:PackageManageTool = "cnpm";
+
     constructor() {
-        console.log("come out")
+        
         //命令转换器
-        this.transformYaml().then(res => {
-            this.conf = res;
+        Promise.all([checkoutPackageManageTools(),  this.transformYaml()])
+        .then(([p, y]) => {
+            if(typeof p === "boolean") {
+                return console.log("You shoud install a package manager first!");
+            }
+            //优先包管理器
+            this.pm = p;
+            //ymal文件转化后的json对象
+            this.conf = y;
             //初始化命令
             this.initialCommanders();
             //start commander
             this.excuteCommander();
-        });
-        
-
+        })
     }
     // yaml file transter to json object
     private async transformYaml(): Promise<BaseOrder> {
@@ -108,7 +116,6 @@ export default class CommanderProxy {
                     //single params to do let it mutiple
                     // const arg = cmd[params[0].name.replace('--', '')];
                     const func = require(path);
-                    console.log("_cmd.name", cmd._name)
                     if(this.getCmdType(cmd._name) === "native") {// 本地命令
                         (func as NativeFunc).apply(this, args).then((res: boolean) => {
                             console.log(
