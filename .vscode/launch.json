@@ -12,8 +12,8 @@
                 "<node_internals>/**"
             ],
             "runtimeExecutable": "puppy",
-            // "runtimeArgs": ["list"],
-            "runtimeArgs": ["update", "-g", "generators"],
+            "runtimeArgs": ["help"],
+            // "runtimeArgs": ["update", "-g", "generators"],
             // "runtimeArgs": ["install", "-p", "puppy-plugins-test"],
             // "runtimeArgs": ["create", "-p", "react"],
             // "runtimeArgs": ["help", "-p", "123", "-u", "356"],

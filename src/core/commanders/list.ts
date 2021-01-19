@@ -36,12 +36,6 @@ const list: NativeCommandFunctions = async params => {
     const all_commands = t_native.concat(t_custom);
     console.table(all_commands);
 
-    // console.log(json);
-    // console.table(json);
-
-
-
-
     return true;
 }
 

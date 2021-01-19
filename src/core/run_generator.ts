@@ -7,7 +7,7 @@ import fs from 'fs';
 import ora from 'ora';
 // import pEachSeries from 'p-each-series';
 import { promisify } from 'util';
-import { excution } from '../tools/index';
+import { mutiProcess } from '../tools/index';
 const env = yeoman.createEnv();
 const exists = promisify(fs.exists);
 // const tarGenerator = path.join(__dirname, '../../node_modules', 'generator-puppy/generators/app', 'react.index.js');
@@ -31,7 +31,7 @@ const _createTemplate = async function (type: string): Promise<boolean> {
             }
         ]
 
-        const rootP = excution(Dependencies);
+        const rootP = mutiProcess(Dependencies);
         ora.promise(rootP, `Generators will be downloaded only once, waiting...`);
         await rootP;
 

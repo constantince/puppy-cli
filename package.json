@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/chalk": "^2.2.0",
+    "@types/chalk-animation": "^1.6.0",
     "@types/commander": "^2.12.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/js-yaml": "^3.12.5",

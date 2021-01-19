@@ -98,7 +98,7 @@ export default class CommanderProxy {
             ...this.conf.source.native,
             ...this.conf.source.custom
         };
-        console.log("come in")
+        // console.log("come in")
         for (let key in allCommands) {
             if (allCommands.hasOwnProperty(key)) {
                 const orderItem = allCommands[key as OrdersType];
@@ -107,20 +107,18 @@ export default class CommanderProxy {
                 this.addParams(params, orderItem.description, cur);
                 cur.action(cmd => {
                     const args = this.handleVariousParams(params, cmd);
-                    console.log(
-                        "commander:",cmd._name,'\n',
-                        "module path:", path,'\n',
-                        "desc:", description,'\n',
-                        "params", args
-                    )
+                    // console.log(
+                    //     "commander:",cmd._name,'\n',
+                    //     "module path:", path,'\n',
+                    //     "desc:", description,'\n',
+                    //     "params", args
+                    // )
                     //single params to do let it mutiple
                     // const arg = cmd[params[0].name.replace('--', '')];
                     const func = require(path);
                     if(this.getCmdType(cmd._name) === "native") {// 本地命令
                         (func as NativeFunc).apply(this, args).then((res: boolean) => {
-                            console.log(
-                                Chalk.underline.bold.bgGray(cmd._name, 'excution stat:', res ? 'success': 'failed')
-                            );
+                            process.exit();
                         });
                     } else { //自定义命令
                         // 第二次执行函数体，第一次执行的是命令写入 TODO: child_process.exec("xxxxxx.index")

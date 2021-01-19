@@ -1,23 +1,20 @@
 import Chalk from 'chalk';
-import { NativeCommandFunctions } from "../../types/types"
+import { NativeCommandFunctions } from "../../types/types";
+// import { excution } from '../../tools/';
+import execa from 'execa';
+// chalkAnimation.rainbow('Lorem ipsum dolor sit amet');
 const help:NativeCommandFunctions = async name => {
 
-    console.log(Chalk.bold(`
-    Welcome to ${Chalk.red('puppy-cli')}, we provide native commanders below:
-        - list:
-            list all commander and how to use them;
-        - create:
-            create a project react, vue or angluar;
-        - help:
-            help commander is default and show message like this;
-        - install:
-            install all commands from remote git repo;
-
-    for more infomations, please checkout documents on github.
-    `))
-
+    const version  = await execa("npm", ["info", "puppy-cli"]);
+    console.log(
+        Chalk.bold(
+            "version current:",
+            Chalk.underline.yellowBright("1.1.6"),
+            "avaiable:",
+            Chalk.underline.green("1.2.0")
+            )
+        );
     return true;
-
 }
 
 module.exports = help;
