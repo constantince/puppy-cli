@@ -1,11 +1,11 @@
 import Chalk from 'chalk';
 import { NativeCommandFunctions } from "../../types/types";
 // import { excution } from '../../tools/';
-import execa from 'execa';
+// import execa from 'execa';
 // chalkAnimation.rainbow('Lorem ipsum dolor sit amet');
 const help:NativeCommandFunctions = async name => {
 
-    const version  = await execa("npm", ["info", "puppy-cli"]);
+    // const version = await execa("npm", ["info", "puppy-cli"]);
     console.log(
         Chalk.bold(
             "version current:",

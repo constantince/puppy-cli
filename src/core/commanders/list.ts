@@ -9,11 +9,6 @@ type NativeCommandFunctions = {
 const list: NativeCommandFunctions = async params => {
     const yml = new Yml();
     const json = await yml.getRawJson();
-    /**\
-     * local:
-     * name  type   abbr  params  desc 
-     * 
-     */
     let t_native = [];
     for(let i in json.source.native) {
         let { description, type, params} = json.source.native[i as OrdersType];
