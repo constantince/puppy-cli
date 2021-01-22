@@ -27,7 +27,7 @@ const _createTemplate = async function (type: string): Promise<boolean> {
             {
                 cmd: 'npm',
                 args: ['install', '--registry', 'http://10.10.204.38:4873', generator, '-D'],
-                cwd: path.join(osenv.home(), '.puppy/'), generator
+                cwd: path.join(osenv.home(), '.puppy/')
             }
         ]
 
